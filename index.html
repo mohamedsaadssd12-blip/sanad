@@ -7,245 +7,250 @@
 <meta name="theme-color" content="#0F1B2D"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F3F4F6;--card:#fff;--ink:#0F1B2D;--mut:#667085;--gold:#A8843E;--line:#E2E5EA;--ok:#2E8F76;--bad:#C2503D;--hero:#0F1B2D;--herotx:#F3F4F6;--herogold:#D8B974;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1220;--card:#121E32;--ink:#EEF0F4;--mut:#93A0B5;--gold:#D8B974;--line:#22314A;--ok:#4FC3A5;--bad:#F08A76;--hero:#16243D}}
-:root[data-theme="dark"]{--bg:#0A1220;--card:#121E32;--ink:#EEF0F4;--mut:#93A0B5;--gold:#D8B974;--line:#22314A;--ok:#4FC3A5;--bad:#F08A76;--hero:#16243D}
+:root{--bg:#F3F4F6;--card:#fff;--ink:#0F1B2D;--mut:#667085;--gold:#A8843E;--line:#E2E5EA;--ok:#2E8F76;--bad:#C2503D;--hero:#0F1B2D;--herotx:#F3F4F6;--herogold:#D8B974;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#0A1220;--card:#121E32;--ink:#EEF0F4;--mut:#93A0B5;--gold:#D8B974;--line:#22314A;--ok:#4FC3A5;--bad:#F08A76;--hero:#16243D}}
 *{box-sizing:border-box;margin:0}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{background:var(--bg);color:var(--ink);font-family:'Readex Pro',system-ui,sans-serif;line-height:1.7;font-size:15px}
-main{max-width:480px;margin:0 auto;padding:12px 16px 40px}
-.tabs{display:flex;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
-.tabs button{flex:1;background:none;color:var(--mut);border:0;border-radius:10px;padding:9px 4px;font:inherit;font-weight:600;cursor:pointer;min-height:44px}
+main{max-width:480px;margin:0 auto;padding:12px 16px 60px}
+.tabs{display:flex;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px;margin-top:10px}
+.tabs button{flex:1;background:none;color:var(--mut);border:0;border-radius:10px;padding:8px 2px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;min-height:44px}
 .tabs button.on{background:var(--hero);color:var(--herotx)}
-.hero{background:var(--hero);color:var(--herotx);border-radius:22px;padding:24px 20px;margin-top:14px}
-.hero h1{font-size:2.3rem;font-weight:700;line-height:1.2;color:var(--herogold)}
-.hero p{opacity:.8;margin-top:6px;font-weight:300}
-h2{font-size:1.05rem;font-weight:700;margin:20px 0 8px}
+.hero{background:var(--hero);color:var(--herotx);border-radius:22px;padding:22px 20px;margin-top:12px}
+.hero h1{font-size:1.7rem;font-weight:700;line-height:1.3;color:var(--herogold)}.hero p{opacity:.8;font-weight:300}
+h2{font-size:1.05rem;font-weight:700;margin:18px 0 6px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px}
-.svc{display:flex;align-items:center;gap:12px;width:100%;text-align:right;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:8px;font:inherit;cursor:pointer;min-height:56px}
-.svc.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
-.svc .e{font-size:1.5rem}.svc .t{flex:1}.svc small{display:block;color:var(--mut);font-weight:300}
-.svc b{color:var(--gold)}
-.btn{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:inherit;font-weight:700;background:var(--hero);color:var(--herotx);cursor:pointer;margin-top:14px;min-height:48px}
-.btn.g{background:var(--gold);color:#0F1B2D}.btn.o{background:none;color:var(--ink);border:1.5px solid var(--line)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.svc{display:flex;align-items:center;gap:12px;width:100%;text-align:right;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:8px;font:inherit;cursor:pointer;min-height:52px}
+.svc.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}.svc .t{flex:1}.svc small{display:block;color:var(--mut);font-weight:300}.svc b{color:var(--gold)}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:13px;font:inherit;font-weight:700;background:var(--hero);color:var(--herotx);cursor:pointer;margin-top:12px;min-height:48px}
+.btn.g{background:var(--gold);color:#0F1B2D}.btn.o{background:none;color:var(--ink);border:1.5px solid var(--line)}.btn:disabled{opacity:.4}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .row{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.mut{color:var(--mut);font-weight:300}
-.gold{color:var(--gold);font-weight:700}
-.steps{display:flex;gap:6px;margin-top:12px}
-.steps i{flex:1;height:5px;border-radius:9px;background:var(--line)}.steps i.on{background:var(--gold)}
-.pulse{width:14px;height:14px;border-radius:50%;background:var(--gold);display:inline-block;animation:p 1.4s infinite}
-@keyframes p{0%{box-shadow:0 0 0 0 rgba(200,169,106,.6)}100%{box-shadow:0 0 0 16px rgba(200,169,106,0)}}
-@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
-.av{width:48px;height:48px;border-radius:50%;background:var(--hero);color:var(--herogold);display:grid;place-items:center;font-weight:700;font-size:1.2rem;flex:none}
-.bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--gold)}
+.mut{color:var(--mut);font-weight:300}.gold{color:var(--gold);font-weight:700}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.steps{display:flex;gap:6px;margin-top:10px}.steps i{flex:1;height:5px;border-radius:9px;background:var(--line)}.steps i.on{background:var(--gold)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.k{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}.k b{display:block;font-size:1.35rem}
-.ok{color:var(--ok);font-weight:600}
-.sw{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font:inherit;cursor:pointer;min-height:44px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}.k b{display:block;font-size:1.25rem}
+.sw{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font:inherit;cursor:pointer;min-height:40px;display:inline-block;margin:3px 3px 0 0}
 .sw.on{background:var(--ok);color:#fff;border-color:var(--ok)}
+input,textarea{width:100%;font:inherit;padding:11px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:.85rem}td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right}th{color:var(--mut);font-weight:400}.x{overflow-x:auto}
+.toast{position:fixed;inset:auto 16px calc(16px + env(safe-area-inset-bottom,0px));max-width:440px;margin:auto;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;font-weight:600;text-align:center;z-index:9}
 .st button{background:none;border:0;font-size:1.8rem;cursor:pointer;color:var(--line);min-width:44px;min-height:44px}.st button.on{color:var(--gold)}
-table{width:100%;border-collapse:collapse;font-size:.88rem}td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:right}th{color:var(--mut);font-weight:400}
-input{width:100%;font:inherit;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);margin-top:6px}
-.x{overflow-x:auto}
+a{color:var(--gold)}
 </style>
 </head>
 <body>
-<main>
-<div class="tabs" role="tablist"><button data-m="c" class="on">العميل</button><button data-m="n">الممرض</button><button data-m="a">الشركة</button><button data-m="r">القواعد</button></div>
-<div id="v"></div>
-</main>
+<main id="v"></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
-var SV=[{id:1,e:'🩺',n:'قياس ضغط',p:150},{id:2,e:'🩸',n:'قياس سكر',p:150},{id:3,e:'💉',n:'حقن (بروشتة)',p:200},{id:4,e:'🩹',n:'تغيير جروح',p:250},{id:5,e:'📋',n:'متابعة حالة (ساعة)',p:400},{id:6,e:'💧',n:'محلول (بالوقت)',p:0,tm:1}];
-var FEE=50,PCT=.2,LIM=500;
-var S={m:'c',sel:{},o:null,on:true,debt:120,earn:0,rate:0,
-log:[{id:101,s:'ضغط + سكر',t:350,n:'منى'},{id:102,s:'حقن',t:250,n:'كريم'},{id:103,s:'متابعة حالة',t:450,n:'منى'},{id:104,s:'تغيير جروح',t:300,n:'سارة'}]};
-var N={name:'منى حسن',ch:'م',lic:'نقابة التمريض ✓',r:'4.9'};
-var K='sanad:v1';
-try{var z=JSON.parse(localStorage.getItem(K));if(z)Object.assign(S,z)}catch(e){}
-if(S.pct!=null)PCT=S.pct;if(S.fee)FEE=S.fee;
-S.pend=S.pend||['هدى إبراهيم','أحمد سمير','نور علي'];S.ver=S.ver||12;S.pm=S.pm||'cash';S.inc=S.inc||[];S.wa=S.wa||[];S.av=S.av||'o';S.pn=0;S.pc=0;
-S.nu=S.nu||['منى حسن','كريم عادل','سارة محمود','ياسمين خالد','عمر فتحي','نورهان سمير','محمود رضا','دينا أشرف','إسلام جمال','رنا طارق'].map(function(n,i){return {id:i+1,n:n,base:[5,40,15,8,25,12,32,9,18,6][i],ph:'01'+['0','1','2','5','0','1','2','5','0','1'][i]+'0000000'+i,docs:[1,1,1,1,1,1],st:'active',debt:[0,0,80,40,0,120,0,0,60,0][i]}});
-S.cl=S.cl||['العميل التجريبي','أحمد علي','مي حسام','طارق محمد','ليلى سعد','حسن إبراهيم','سلمى عادل','يوسف كمال','هالة منصور','باسم رشدي'].map(function(n,i){return {id:i+1,n:n,ph:'01'+['0','1','2','5','0','1','2','5','0','1'][i]+'1111111'+i,st:'active'}});
-S.ords=S.ords||(function(){var a=[],sv=['ضغط + سكر','حقن','تغيير جروح','متابعة حالة','محلول (بالوقت)','قياس سكر'],ts=[350,250,300,450,520,200],rt=[5,5,4,5,3,4];for(var i=0;i<34;i++)a.push({id:i+1,cl:(i*3)%10+1,nu:(i*7)%10+1,s:sv[i%6],t:ts[i%6],rt:rt[(i*5)%6],pm:i%3?'cash':'insta'});return a})();
-S.cmp=S.cmp||[{id:1,from:'client',cl:4,nu:2,txt:'تأخر ٤٠ دقيقة عن الميعاد',st:'open',tm:'٢٠/١٠'},{id:2,from:'nurse',cl:6,nu:4,txt:'العميل طلب الاتفاق خارج التطبيق',st:'open',tm:'٢٢/١٠'},{id:3,from:'client',cl:3,nu:7,txt:'ملاحظة على التعقيم',st:'closed',act:'تحذير',tm:'١٥/١٠'}];S.recs=S.recs||[];S.fam=S.fam||'لنفسي';S.co=S.co||[{n:'شركة (مثال)',e:120,v:2,p:200},{n:'مصنع (مثال)',e:300,v:1,p:180}];S.drs=S.drs||[{n:'د. (اسم الطبيب) – مثال',sp:'باطنة',ph:'01000000000'}];S.r15=S.r15||75;S.reg=S.reg||'ok';S.docs=S.docs||[1,1,1,1,1,1];S.sign=S.sign!=null?S.sign:true;
-S.m=({'#n':'n','#a':'a'})[location.hash]||'c';
-function sv(){try{var c=JSON.parse(JSON.stringify(S));delete c.m;localStorage.setItem(K,JSON.stringify(c))}catch(e){}}
-window.addEventListener('storage',function(e){if(e.key===K&&e.newValue){try{var m=S.m;Object.assign(S,JSON.parse(e.newValue));S.m=m;if(S.pct!=null)PCT=S.pct;if(S.fee)FEE=S.fee;render()}catch(x){}}});
-function tot(){var t=0;SV.forEach(function(s){if(S.sel[s.id])t+=s.p});return Object.keys(S.sel).some(function(k){return S.sel[k]})?t+FEE:0}
-function el(o){return o.t0?Math.floor((Date.now()-o.t0)/60000)+(o.off||0):0}
-function bill(o){return o.fx+(o.tm?Math.max(1,Math.ceil(el(o)/15))*S.r15:0)}
-function cur(o){return o.st==='done'?o.t:o.st==='started'?bill(o):o.fx}
-function pmn(k){return {cash:'كاش',insta:'إنستاباي',wal:'محفظة',card:'حساب بنكي'}[k]||'كاش'}
-var OPS='01000000000',STP=['اتصلت بالعميل','اتصلت بالممرض','استدعيت الإسعاف ١٢٣','أوقفت حساب الممرض مؤقتاً'];
-var CR=['١. لازم يكون معاك شخص بالغ في البيت وقت الزيارة.','٢. جهّز الروشتة والأدوية وبلّغ الممرض بأي حساسية أو أمراض مزمنة.','٣. الدفع داخل التطبيق فقط، وماتتفقش مع الممرض على زيارات بره.','٤. زرار الطوارئ للخطر الفعلي، ولو الحياة في خطر اتصل ١٢٣ الأول.','٥. تقدر تلغي الطلب قبل وصول الممرض.'];
-var NR=['١. اشتغل في حدود ترخيصك بس، ومن غير روشتة ماتديش حقن.','٢. التزم بالتعقيم وسجّل كل زيارة.','٣. ممنوع الاتفاق مع العملاء على زيارات خارج التطبيق.','٤. سدّد نسبة الشركة في موعدها.','٥. لو شفت خطر: ١٢٣ الأول، وبعدين زرار الطوارئ.'];
-var PR=['١. خطر على الحياة (إغماء، نزيف، ضيق تنفس): اتصل ١٢٣ فوراً.','٢. اضغط زرار الطوارئ، وفريق العمليات هيتصل بيكم في دقايق.','٣. لو مشكلة أمان أو سلوك: الممرض يخرج من المكان فوراً.','٤. الشركة بتسجّل الحادثة وبتبعت تقرير للإدارة.'];
-function tmn(){return new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function wa(to,m){S.wa.unshift({tm:tmn(),to:to,m:m});S.wa=S.wa.slice(0,30)}
-function tier(n){return n>=30?'🥇 ذهبي':n>=10?'🥈 فضي':'🥉 برونزي'}
-function nv(x){return x.base+S.ords.filter(function(o){return o.nu===x.id}).length}
-function vis(){return nv(S.nu[0])}
-var STN={active:'نشط',suspended:'موقوف',deleted:'محذوف'};
-function setst(l,id,a){l[id-1].st=a==='sus'?'suspended':a==='del'?'deleted':'active'}
-function sbtn(k,id,x){return (x.st==='active'?'<button class="sw" data-'+k+'="'+id+':sus">إيقاف</button>':'<button class="sw" data-'+k+'="'+id+':act">'+(x.st==='deleted'?'استرجاع':'تفعيل')+'</button>')+(x.st==='deleted'?'':'<button class="sw" data-'+k+'="'+id+':del" style="color:var(--bad)">حذف</button>')}
-function cmpH(l){return l.length?l.map(function(c){var a=S.cl[c.cl-1].n,b=S.nu[c.nu-1].n;return '<p style="padding:6px 0;border-bottom:1px solid var(--line)"><b>'+(c.from==='client'?'من '+a+' ضد '+b:'من '+b+' ضد '+a)+'</b> · <span class="mut">'+c.tm+'</span><br>'+c.txt+'<br>'+(c.st==='open'?'<button class="sw" data-cr="'+c.id+':w">تحذير</button> <button class="sw" data-cr="'+c.id+':f">خصم</button> <button class="sw" data-cr="'+c.id+':s">إيقاف الحساب</button>':'<span class="ok">اتقفلت: '+c.act+'</span>')+'</p>'}).join(''):'<span class="mut">مفيش شكاوى</span>'}
-function kk(l,v){return '<div class="k"><span class="mut">'+l+'</span><b>'+v+'</b></div>'}
-function row(x,k,sub,bad){return '<button class="svc" data-'+k+'="'+x.id+'" style="margin:0;border:0;border-bottom:1px solid var(--line);border-radius:0"><span class="av" style="width:36px;height:36px;font-size:1rem">'+x.n.charAt(0)+'</span><span class="t">'+x.n+'<small>'+sub+' · '+STN[x.st]+'</small></span>'+(bad?'<b style="color:var(--bad)">'+f(bad)+' شكوى</b>':'')+'</button>'}
-function nlist(){return '<h2>الممرضين ('+f(S.nu.length)+')</h2><div class="card">'+S.nu.map(function(x){return row(x,'pn',tier(nv(x)),S.cmp.filter(function(c){return c.from==='client'&&c.nu===x.id&&c.st==='open'}).length)}).join('')+'</div>'}
-function clist(){return '<h2>العملاء ('+f(S.cl.length)+')</h2><div class="card">'+S.cl.map(function(x){return row(x,'pc',f(S.ords.filter(function(o){return o.cl===x.id}).length)+' خدمة',S.cmp.filter(function(c){return c.from==='nurse'&&c.cl===x.id&&c.st==='open'}).length)}).join('')+'</div>'}
-function npro(x){var os=S.ords.filter(function(o){return o.nu===x.id}),rs=os.filter(function(o){return o.rt}),av=rs.length?(rs.reduce(function(a,o){return a+o.rt},0)/rs.length).toFixed(1):'-',tt=os.reduce(function(a,o){return a+o.t},0),dc=x.id===1?S.docs:x.docs,dt=x.id===1?S.debt:x.debt;
-var D=['شهادة التخرج','شهادة الامتياز','البطاقة (وش)','البطاقة (ضهر)','كارنيه النقابة','كارنيه المزاولة'];
-return '<button class="sw" data-bk="1" style="margin-top:12px">‹ رجوع</button><div class="hero"><div class="row"><div><h1 style="font-size:1.5rem">'+x.n+'</h1><p>'+x.ph+' · '+tier(nv(x))+'</p></div><b>'+STN[x.st]+'</b></div></div><div class="card">'+sbtn('ns',x.id,x)+'</div><div class="grid">'+kk('الزيارات',f(os.length))+kk('متوسط التقييم',av==='-'?'-':'⭐ '+av)+kk('إجمالي التحصيل',f(tt)+' ج')+kk('مديونية',f(dt)+' ج')+'</div><h2>المستندات</h2><div class="card">'+D.map(function(d,i){return '<div class="row" style="padding:4px 0"><span>'+d+'</span><span class="'+(dc[i]?'ok':'')+'">'+(dc[i]?'مرفوع ✓':'ناقص')+'</span></div>'}).join('')+'</div><h2>الشكاوى ضده</h2><div class="card">'+cmpH(S.cmp.filter(function(c){return c.from==='client'&&c.nu===x.id}))+'</div><h2>شغله</h2><div class="card x"><table><tr><th>العميل</th><th>الخدمة</th><th>المبلغ</th><th>تقييم</th></tr>'+os.slice(-8).reverse().map(function(o){return '<tr><td>'+S.cl[o.cl-1].n+'</td><td>'+o.s+'</td><td>'+f(o.t)+'</td><td>'+(o.rt?'⭐'+o.rt:'-')+'</td></tr>'}).join('')+'</table></div>'}
-function cpro(x){var os=S.ords.filter(function(o){return o.cl===x.id}),tt=os.reduce(function(a,o){return a+o.t},0);
-return '<button class="sw" data-bk="1" style="margin-top:12px">‹ رجوع</button><div class="hero"><div class="row"><div><h1 style="font-size:1.5rem">'+x.n+'</h1><p>'+x.ph+'</p></div><b>'+STN[x.st]+'</b></div></div><div class="card">'+sbtn('cs',x.id,x)+'</div><div class="grid">'+kk('الخدمات',f(os.length))+kk('إجمالي الدفع',f(tt)+' ج')+kk('شكاوى ضده',f(S.cmp.filter(function(c){return c.from==='nurse'&&c.cl===x.id}).length))+kk('شكاوى قدّمها',f(S.cmp.filter(function(c){return c.from==='client'&&c.cl===x.id}).length))+'</div><h2>الشكاوى</h2><div class="card">'+cmpH(S.cmp.filter(function(c){return c.cl===x.id}))+'</div><h2>الخدمات اللي أخدها</h2><div class="card x"><table><tr><th>الممرض</th><th>الخدمة</th><th>المبلغ</th></tr>'+os.slice(-8).reverse().map(function(o){return '<tr><td>'+S.nu[o.nu-1].n+'</td><td>'+o.s+'</td><td>'+f(o.t)+'</td></tr>'}).join('')+'</table></div>'}
-function admin(){var a=S.av||'o';return '<div class="tabs" style="position:static;margin-top:10px">'+[['o','نظرة عامة'],['n','الممرضين'],['c','العملاء'],['k','الشكاوى']].map(function(x){return '<button class="'+(a===x[0]?'on':'')+'" data-av="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div>'+(a==='n'?(S.pn?npro(S.nu[S.pn-1]):nlist()):a==='c'?(S.pc?cpro(S.cl[S.pc-1]):clist()):a==='k'?'<h2>كل الشكاوى</h2><div class="card">'+cmpH(S.cmp)+'</div>':adminOv())}
-function eta(){return Math.max(1,12-Math.floor((Date.now()-(S.o.ta||Date.now()))/5000))}
-function map(){var p=Math.min(1,(Date.now()-(S.o.ta||Date.now()))/60000);
-return '<svg viewBox="0 0 300 90" width="100%" role="img" aria-label="موقع الممرض على الطريق" style="margin-top:10px;background:var(--bg);border-radius:12px"><line x1="30" y1="60" x2="270" y2="40" stroke="var(--line)" stroke-width="6" stroke-linecap="round"/><circle cx="270" cy="40" r="9" fill="var(--bad)"/><text x="270" y="72" text-anchor="middle" font-size="11" fill="var(--mut)">بيتك</text><circle cx="'+(30+240*p)+'" cy="'+(60-20*p)+'" r="9" fill="var(--gold)"/><text x="150" y="86" text-anchor="middle" font-size="10" fill="var(--mut)">تتبع مباشر (محاكاة)</text></svg>'}
-var PL=[['متابعة كبار السن','٤ زيارات شهرياً · ضغط وسكر',4,500],['باقة الحقن الشهرية','٨ حقن بروشتة',8,1200],['رعاية بعد العملية','١٢ زيارة · جروح ومتابعة',12,2400]];
-function plans(){var h='<h2>📦 الباقات</h2>';if(S.sub)h+='<div class="card"><b>'+S.sub.n+'</b><p class="ok">فاضل '+f(S.sub.left)+' زيارة</p></div>';
-return h+PL.map(function(p,i){return '<div class="card row"><span><b>'+p[0]+'</b><br><small class="mut">'+p[1]+'</small></span><button class="sw" data-pl="'+i+'">'+f(p[3])+' ج</button></div>'}).join('')}
-function recs(){if(!S.recs.length)return '';return '<h2>🩺 سجلي الصحي</h2><div class="card">'+S.recs.slice(0,3).map(function(r){return '<p style="padding:5px 0;border-bottom:1px solid var(--line)"><b>'+r.d+' · '+r.svc+(r.w&&r.w!=='لنفسي'?' · '+r.w:'')+'</b><br><span class="mut">ضغط '+r.bp+' · سكر '+r.sg+(r.nt?' · '+r.nt:'')+'</span></p>'}).join('')+'<p class="mut">بياناتك الصحية محمية ومش بتتشارك غير بإذنك.</p></div>'}
-function waLog(){return '<h2>💬 رسائل واتساب (محاكاة)</h2><div class="card">'+(S.wa.length?S.wa.slice(0,6).map(function(w){return '<p style="padding:4px 0"><span class="mut">'+w.tm+' · إلى '+w.to+'</span><br>'+w.m+'</p>'}).join(''):'<span class="mut">لسه مفيش رسائل</span>')+'</div>'}
-function coAdm(){var v=0;S.co.forEach(function(c){v+=c.e*c.v*c.p});
-return '<h2>🏢 عقود الشركات والتأمين</h2><div class="card x"><table><tr><th>الجهة</th><th>الموظفين</th><th>زيارات/سنة</th><th>السعر</th></tr>'+S.co.map(function(c){return '<tr><td>'+c.n+'</td><td>'+f(c.e)+'</td><td>'+f(c.v)+'</td><td>'+f(c.p)+'</td></tr>'}).join('')+'</table><p class="gold">القيمة السنوية المتوقعة: '+f(v)+' ج</p><input id="cn" placeholder="اسم الجهة"><input id="ce" placeholder="عدد الموظفين" inputmode="numeric"><input id="cp" placeholder="سعر الزيارة" inputmode="numeric"><button class="btn o" data-a="adc">إضافة عقد</button></div>'}
-function mkinc(by){wa('إدارة الشركة','🚨 بلاغ طوارئ من '+by);S.inc.unshift({id:S.inc.length+1,tm:tmn(),by:by,svc:S.o?S.o.names:'-',nurse:N.name,st:'open',sp:[0,0,0,0]})}
-function rules(){
-var h='<div class="hero"><h1 style="font-size:1.6rem">التعليمات والقواعد</h1><p>للسلامة، اقرأها قبل أول زيارة</p></div>';
-h+='<h2>📞 أرقام الطوارئ</h2><div class="card">'+[['إسعاف','123'],['الشرطة','122'],['الحماية المدنية','180'],['عمليات سَنَد ٢٤ ساعة',OPS]].map(function(r){return '<div class="row" style="padding:6px 0"><span>'+r[0]+'</span><a class="gold" href="tel:'+r[1]+'">'+r[1]+'</a></div>'}).join('')+'</div>';
-h+='<h2>👨‍⚕️ أطباء الشركة</h2><div class="card">'+(S.drs.length?S.drs.map(function(d){return '<div class="row" style="padding:6px 0"><span>'+d.n+'<small class="mut"> · '+d.sp+'</small></span><a class="gold" href="tel:'+d.ph+'">'+d.ph+'</a></div>'}).join(''):'<span class="mut">لسه مفيش</span>')+'</div>';
-return h+'<h2>للعميل</h2><div class="card"><p>'+CR.join('<br>')+'</p></div><h2>للممرض</h2><div class="card"><p>'+NR.join('<br>')+'</p></div><h2>لو حصلت طوارئ</h2><div class="card"><p>'+PR.join('<br>')+'</p></div>'}
-function alerts(){var o=S.inc.filter(function(x){return x.st==='open'});
-return o.map(function(x){return '<div class="card" style="border:2px solid var(--bad)"><b style="color:var(--bad)">🚨 طوارئ #'+f(x.id)+' · '+x.tm+'</b><p>من '+x.by+' · '+x.svc+' · الممرض: '+x.nurse+'</p>'+STP.map(function(s,i){return '<button class="sw'+(x.sp[i]?' on':'')+'" data-is="'+x.id+':'+i+'" style="margin:3px 3px 0 0">'+s+(x.sp[i]?' ✓':'')+'</button>'}).join('')+'<button class="btn g" data-ir="'+x.id+'">تم التعامل وإرسال التقرير</button></div>'}).join('')}
-function incLog(){var d=S.inc.filter(function(x){return x.st==='done'});
-return '<h2>سجل الحوادث ('+f(S.inc.length)+')</h2><div class="card">'+(d.length?d.map(function(x){return '<p style="padding:6px 0;border-bottom:1px solid var(--line)"><b>بلاغ #'+f(x.id)+'</b> · '+x.tm+' · '+x.by+'<br><span class="mut">'+x.svc+' · '+x.nurse+'<br>الإجراءات: '+(STP.filter(function(s,i){return x.sp[i]}).join('، ')||'لا شيء مسجل')+'<br>أُرسل التقرير للإدارة '+x.rt+' ✓</span></p>'}).join(''):'<span class="mut">مفيش حوادث مقفولة لسه</span>')+'</div>'}
-function drsAdm(){return '<h2>أطباء الشركة</h2><div class="card">'+S.drs.map(function(d,i){return '<div class="row" style="padding:5px 0"><span>'+d.n+'<small class="mut"> · '+d.ph+'</small></span><button class="sw" data-dd="'+i+'" aria-label="حذف">✕</button></div>'}).join('')+'<input id="dn" placeholder="اسم الطبيب"><input id="dp" placeholder="رقم التليفون" inputmode="tel"><button class="btn o" data-a="adr">إضافة طبيب</button></div>'}
-function names(){return SV.filter(function(s){return S.sel[s.id]}).map(function(s){return s.n}).join(' + ')}
-function f(n){return Number(n).toLocaleString('ar-EG')}
-var ST=['accepted','arrived','started','done'];
-function si(){return S.o?ST.indexOf(S.o.st):-1}
-function stepsBar(){var i=si(),h='<div class="steps">';for(var k=0;k<4;k++)h+='<i class="'+(k<=i?'on':'')+'"></i>';return h+'</div>'}
-var LB={accepted:'الممرضة في الطريق إليك',arrived:'الممرضة وصلت',started:'الخدمة جارية',done:'تمت الخدمة'};
+var SB=supabase.createClient('https://tsxvmmzhqrpwostxlgce.supabase.co','sb_publishable_lH02LIooEUgGRjnlNlPduw_vjt3lSbj');
+var S={u:null,p:null,d:{},mode:'in',role:'client',sel:{},fam:'لنفسي',pm:'cash',abr:false,sign:false,tab:'o',view:null,toast:'',j:'',urls:{}};
+var PM={cash:'كاش',insta:'إنستاباي',wal:'محفظة',card:'حساب بنكي'};
+var STL={new:'بندوّر على ممرض…',accepted:'الممرض في الطريق',arrived:'الممرض وصل',started:'الخدمة جارية',done:'تمت الخدمة',cancelled:'اتلغى'};
+var SI=['accepted','arrived','started','done'];
+var DOCS=[['grad','شهادة التخرج'],['intern','شهادة الامتياز'],['id_front','البطاقة (وش)'],['id_back','البطاقة (ضهر)'],['syndicate','كارنيه النقابة'],['license','كارنيه المزاولة']];
+var STP=['اتصلت بالعميل','اتصلت بالممرض','استدعيت الإسعاف ١٢٣','أوقفت الحساب'];
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function f(n){return Number(n||0).toLocaleString('ar-EG')}
+function q(r){if(r.error)throw r.error;return r.data}
+function val(i){var e=document.getElementById(i);return e?e.value.trim():''}
+function card(x){return '<div class="card">'+x+'</div>'}
+function hero(t,s){return '<div class="hero"><h1>'+t+'</h1><p>'+s+'</p></div>'}
+function bar(s){var i=SI.indexOf(s),h='<div class="steps">';for(var k=0;k<4;k++)h+='<i class="'+(k<=i?'on':'')+'"></i>';return h+'</div>'}
+function B(a,t,c){return '<button class="'+(c||'btn')+'" data-a="'+a+'">'+t+'</button>'}
+function K(l,v){return '<div class="k"><span class="mut">'+l+'</span><b>'+v+'</b></div>'}
+function nrs(p){return Array.isArray(p.nurses)?p.nurses[0]||{}:p.nurses||{}}
+function pn(id){var x=(S.d.pr||[]).filter(function(p){return p.id===id})[0];return x?esc(x.name||'—'):'—'}
+function svn(o){return (o.services||[]).map(esc).join(' + ')}
+function say(t){S.toast=t;render();setTimeout(function(){S.toast='';render()},3500)}
 
-function client(){
-var h='<div class="hero"><h1>سَنَد</h1><p>ممرض مرخّص يوصلك البيت بمستوى فندقي.</p></div>';
-if(!S.o){
-h+='<h2>اختار الخدمة</h2>';
-SV.forEach(function(s){h+='<button class="svc'+(S.sel[s.id]?' on':'')+'" data-s="'+s.id+'" aria-pressed="'+!!S.sel[s.id]+'"><span class="e">'+s.e+'</span><span class="t">'+s.n+'<small>'+(S.sel[s.id]?'مختارة':'اضغط للإضافة')+'</small></span><b>'+(s.tm?'بالوقت':f(s.p)+' ج')+'</b></button>'});
-h+='<h2>الزيارة لمين؟</h2><div class="grid">'+['لنفسي','ماما','بابا'].map(function(w){return '<button class="svc'+(S.fam===w?' on':'')+'" data-fam="'+w+'" aria-pressed="'+(S.fam===w)+'"><span class="t">'+w+'</span></button>'}).join('')+'</div>'+(S.fam!=='لنفسي'?'<button class="svc'+(S.abroad?' on':'')+'" data-a="abr"><span class="e">✈️</span><span class="t">أنا خارج مصر<small>ابعتلي التقرير والمتابعة على واتساب</small></span></button>':'');
-if(S.sel[3])h+='<button class="svc'+(S.rx?' on':'')+'" data-a="rx"><span class="e">📄</span><span class="t">'+(S.rx?'تم رفع الروشتة ✓':'ارفع صورة الروشتة')+'<small>مطلوبة للحقن</small></span></button>';
-h+='<div class="card"><div class="row"><span class="mut">العنوان</span><span>سموحة، الإسكندرية</span></div><div class="row"><span class="mut">الوقت</span><span>في أسرع وقت</span></div><div class="row"><span class="mut">رسوم الزيارة</span><span>'+f(FEE)+' ج</span></div><div class="row"><b>الإجمالي'+(S.sel[6]?' (غير شامل المحلول)':'')+'</b><span class="gold">'+f(tot())+' ج</span></div>'+(S.sel[6]?'<p class="mut">المحلول: '+f(S.r15)+' ج كل ربع ساعة، من بداية الممرض لنهايته.</p>':'')+'</div>';
-h+='<h2>طريقة الدفع</h2><div class="grid">'+[['cash','💵','كاش'],['insta','⚡','إنستاباي'],['wal','📱','محفظة'],['card','💳','حساب بنكي']].map(function(p){return '<button class="svc'+(S.pm===p[0]?' on':'')+'" data-pm="'+p[0]+'" aria-pressed="'+(S.pm===p[0])+'"><span class="e">'+p[1]+'</span><span class="t">'+p[2]+'</span></button>'}).join('')+'</div>'+(S.pm!=='cash'?'<p class="mut">دفع أونلاين: نصيب الشركة والممرض بيتوزع تلقائي.</p>':'');
-h+='<button class="btn g" data-a="req"'+((tot()&&(!S.sel[3]||S.rx)&&S.cl[0].st==='active')?'':' disabled')+'>اطلب ممرض الآن</button>'+(S.cl[0].st!=='active'?'<p style="color:var(--bad)">حسابك موقوف. تواصل مع الشركة.</p>':'');
-h+=plans()+recs();
-}else if(S.o.st==='new'){
-h+='<div class="card" style="text-align:center;padding:28px"><span class="pulse"></span><h2>بندوّر على أقرب ممرض…</h2><p class="mut">'+names()+'<br>جرّب: افتح تبويب «الممرض» واقبل الطلب.</p><button class="btn o" data-a="cancel">إلغاء الطلب</button></div>';
-}else if(S.o.st!=='done'){
-h+='<div class="card"><div class="row" style="justify-content:flex-start"><div class="av">'+N.ch+'</div><div><b>'+N.name+'</b><div class="mut">⭐ '+N.r+' · '+N.lic+' · '+tier(vis())+'</div></div></div>'+stepsBar()+'<p style="margin-top:10px"><b>'+LB[S.o.st]+'</b></p><p class="mut">'+(S.o.st==='accepted'?'الوصول خلال '+f(eta())+' دقيقة':S.o.names)+'</p>'+(S.o.st==='accepted'?map():'')+'</div><div class="card row"><span class="mut">'+(S.o.pm==='cash'?'المطلوب كاش':'أونلاين · '+pmn(S.o.pm))+(S.o.tm&&S.o.st==='started'?' · '+f(el(S.o))+' دقيقة':'')+'</span><span class="gold">'+f(cur(S.o))+' ج</span></div>'+(S.sos?'<div class="card ok">تم إبلاغ الشركة ✓ هيتصلوا بيك حالاً. لو الحياة في خطر اتصل <a href="tel:123" class="gold">١٢٣</a></div>':'<button class="btn o" data-a="sos" style="color:var(--bad)">🚨 طوارئ</button>');
+/* ---------- تحميل البيانات ---------- */
+async function load(force){
+  if(!S.u)return;
+  var p=q(await SB.from('profiles').select('*,nurses(*)').eq('id',S.u.id).single()),d={};
+  d.cf=q(await SB.from('settings').select('*').single());
+  var oj='*,nurse:profiles!nurse_id(name,phone),client:profiles!client_id(name,phone)';
+  if(p.role==='client'){
+    d.sv=q(await SB.from('services').select('*').eq('active',true).order('id'));
+    d.o=q(await SB.from('orders').select(oj).eq('client_id',S.u.id).order('id',{ascending:false}).limit(15));
+  }else if(p.role==='nurse'){
+    var n=nrs(p);
+    if(n.reg_status==='ok'){
+      d.nw=q(await SB.from('orders').select(oj).eq('status','new').order('id'));
+      d.o=q(await SB.from('orders').select(oj).eq('nurse_id',S.u.id).order('id',{ascending:false}).limit(15));
+    }else if(n.reg_status==='new'){
+      d.up={};var fl=q(await SB.storage.from('nurse-docs').list(S.u.id));(fl||[]).forEach(function(x){d.up[x.name.split('.')[0]]=S.u.id+'/'+x.name});
+    }
+  }else{
+    d.pr=q(await SB.from('profiles').select('*,nurses(*)').order('created_at',{ascending:false}));
+    d.o=q(await SB.from('orders').select(oj).order('id',{ascending:false}).limit(200));
+    d.cm=q(await SB.from('complaints').select('*').order('id',{ascending:false}));
+    d.in=q(await SB.from('incidents').select('*').order('id',{ascending:false}));
+  }
+  if(p.role!=='nurse'||nrs(p).reg_status==='ok'){var rp=q(await SB.from('reports').select('*'));d.rp={};rp.forEach(function(r){d.rp[r.order_id]=r})}
+  var j=JSON.stringify([p,d,Math.floor(Date.now()/60000)]);
+  if(force||j!==S.j){S.j=j;S.p=p;S.d=d;render()}
+}
+async function run(fn){try{await fn();await load(true)}catch(e){say(e.message||'حصل خطأ')}}
+
+/* ---------- الدخول ---------- */
+function authV(){var up=S.mode==='up';
+return hero('سَنَد','تمريض منزلي بمستوى فندقي')+card('<div class="tabs" style="margin-top:0">'+B('m:in','دخول',up?'':'on')+B('m:up','حساب جديد',up?'on':'')+'</div>'
++(up?'<input id="nm" placeholder="الاسم"><input id="ph" placeholder="رقم الموبايل" inputmode="tel"><div class="grid">'+B('r:client','عميل','svc'+(S.role==='client'?' on':''))+B('r:nurse','ممرض','svc'+(S.role==='nurse'?' on':''))+'</div>':'')
++'<input id="em" type="email" placeholder="الإيميل" autocomplete="email"><input id="pw" type="password" placeholder="الباسوورد (٦ حروف على الأقل)" autocomplete="current-password">'+B(up?'su':'si',up?'إنشاء الحساب':'دخول','btn g'))}
+
+/* ---------- العميل ---------- */
+function clientV(){
+var p=S.p,d=S.d,o=d.o||[],ac=o.filter(function(x){return ['new','accepted','arrived','started'].indexOf(x.status)>-1})[0];
+var h=hero('أهلاً '+esc(p.name||''),'ممرض مرخّص يوصلك البيت')+B('out','خروج','sw');
+if(p.status!=='active')return h+card('<b class="bad">حسابك موقوف. تواصل مع الشركة.</b>');
+if(ac)h+=activeC(ac);
+else{
+ var ld=o[0];
+ if(ld&&ld.status==='done'&&!localStorage.getItem('sd'+ld.id))h+=doneC(ld);
+ h+='<h2>اختار الخدمة</h2>';
+ var t=0,fee=d.cf.visit_fee;
+ (d.sv||[]).forEach(function(s){var on=S.sel[s.id];if(on)t+=Number(s.price);h+='<button class="svc'+(on?' on':'')+'" data-a="sel:'+s.id+'"><span class="t">'+esc(s.name)+'</span><b>'+(s.time_based?'بالوقت':f(s.price)+' ج')+'</b></button>'});
+ var any=Object.keys(S.sel).some(function(k){return S.sel[k]});
+ h+='<h2>الزيارة لمين؟</h2><div class="grid">'+['لنفسي','ماما','بابا'].map(function(w){return B('fam:'+w,w,'svc'+(S.fam===w?' on':''))}).join('')+'</div>';
+ if(S.fam!=='لنفسي')h+=B('abr','✈️ أنا خارج مصر، ابعتلي التقرير','svc'+(S.abr?' on':''));
+ h+='<h2>طريقة الدفع</h2><div class="grid">'+Object.keys(PM).map(function(k){return B('pm:'+k,PM[k],'svc'+(S.pm===k?' on':''))}).join('')+'</div>';
+ h+=card('<div class="row"><span class="mut">رسوم الزيارة</span><span>'+f(fee)+' ج</span></div><div class="row"><b>الإجمالي</b><span class="gold">'+(any?f(t+Number(fee)):'—')+' ج</span></div>'+(S.sel[6]?'<p class="mut">المحلول: '+f(d.cf.iv_rate15)+' ج كل ربع ساعة، بيتحسب بالوقت الفعلي.</p>':''));
+ h+='<button class="btn g" data-a="req"'+(any?'':' disabled')+'>اطلب ممرض الآن</button>';
+ var hs=o.filter(function(x){return x.status==='done'||x.status==='cancelled'});
+ if(hs.length)h+='<h2>طلباتي السابقة</h2>'+card(hs.map(function(x){return '<div class="row" style="padding:5px 0"><span>'+svn(x)+'<br><small class="mut">'+new Date(x.created_at).toLocaleDateString('ar-EG')+' · '+STL[x.status]+'</small></span><b>'+(x.total?f(x.total)+' ج':'—')+'</b></div>'}).join(''));
+}
+return h}
+function activeC(o){
+var h=card('<b>'+svn(o)+'</b>'+bar(o.status)+'<p style="margin-top:8px"><b>'+STL[o.status]+'</b></p>'+(o.nurse?'<p class="mut">الممرض: '+esc(o.nurse.name)+(o.nurse.phone?' · <a href="tel:'+esc(o.nurse.phone)+'">'+esc(o.nurse.phone)+'</a>':'')+'</p>':'')
++(o.status==='started'&&o.time_based?'<p class="gold">مضى '+f(Math.floor((Date.now()-new Date(o.started_at))/60000))+' دقيقة</p>':'')
++'<div class="row"><span class="mut">'+PM[o.pay_method]+'</span><span class="gold">'+f(o.fixed_amount)+' ج'+(o.time_based?' + المحلول':'')+'</span></div>');
+h+=(o.status==='new'||o.status==='accepted'?B('cancel:'+o.id,'إلغاء الطلب','btn o'):'');
+h+=(o.status!=='new'?B('sos:'+o.id,'🚨 طوارئ','btn o').replace('class="btn o"','class="btn o" style="color:var(--bad)"'):'');
+return h}
+function doneC(o){var r=S.d.rp[o.id],h='<div class="card" style="text-align:center"><h2>تمت الخدمة ✓</h2><p class="gold">'+f(o.total)+' ج · '+PM[o.pay_method]+'</p>'
++(o.time_based?'<p class="mut">مدة المحلول '+f(o.minutes)+' دقيقة</p>':'')
++(r?'<p>🩺 ضغط '+esc(r.bp)+' · سكر '+esc(r.sugar)+(r.notes?'<br>'+esc(r.notes):'')+'</p>':'<p class="mut">الممرض بيكتب تقرير الزيارة…</p>');
+if(o.rating)h+='<p class="ok">تقييمك: '+'★'.repeat(o.rating)+'</p>';
+else{h+='<div class="st">';for(var i=1;i<=5;i++)h+='<button data-a="rate:'+o.id+':'+i+'" aria-label="'+i+'">★</button>';h+='</div>'}
+h+='<input id="cmt" placeholder="عندك شكوى؟ اكتبها هنا">'+B('cmp:'+o.id,'أرسل الشكوى','btn o')+B('dis:'+o.id,'طلب جديد','btn g')+'</div>';
+return h}
+
+/* ---------- الممرض ---------- */
+function nurseV(){
+var p=S.p,n=nrs(p),d=S.d,h=hero(esc(p.name||'ممرض'),'سَنَد للممرضين')+B('out','خروج','sw');
+if(p.status!=='active')return h+card('<b class="bad">حسابك موقوف. تواصل مع الشركة.</b>');
+if(n.reg_status==='pending')return h+card('<b>طلبك قيد المراجعة</b><p class="mut">هتوصلك الموافقة من الشركة بعد مراجعة المستندات.</p>');
+if(n.reg_status==='new'){
+ var up=d.up||{},all=DOCS.every(function(x){return up[x[0]]});
+ h+='<h2>ارفع مستنداتك</h2>'+card(DOCS.map(function(x){return '<div class="row" style="padding:5px 0"><span>'+x[1]+'</span><label class="sw'+(up[x[0]]?' on':'')+'">'+(up[x[0]]?'تم ✓':'ارفع')+'<input type="file" accept="image/*" data-doc="'+x[0]+'" hidden></label></div>'}).join(''));
+ h+='<h2>عقد الانضمام</h2>'+card('<p>١. ألتزم بسداد نسبة الشركة في موعدها.<br>٢. لا أتفق مع أي عميل جاني من الشركة على العمل خارج التطبيق.<br>٣. أقدّم الخدمات في حدود ترخيصي فقط.</p>'+B('sign',S.sign?'وقّعت ✓':'أوافق وأوقّع','sw'+(S.sign?' on':'')));
+ return h+'<button class="btn g" data-a="subn"'+(all&&S.sign?'':' disabled')+'>أرسل للمراجعة</button>'}
+var o=d.o||[],ac=o.filter(function(x){return ['accepted','arrived','started'].indexOf(x.status)>-1})[0],ld=o[0];
+h+='<div class="grid">'+K('رصيد قابل للسحب',f(n.balance)+' ج')+K('مستحق للشركة',f(n.debt)+' ج')+K('زيارات',f(n.visits))+K('تقييم',n.rating?'⭐ '+n.rating:'—')+'</div>';
+if(ac){
+ var nx={accepted:'وصلت للعميل',arrived:'ابدأ الخدمة',started:'أنهِ الخدمة'}[ac.status];
+ h+='<h2>الزيارة الحالية</h2>'+card('<b>'+svn(ac)+'</b>'+(ac.for_whom!=='لنفسي'&&ac.for_whom!=='self'?'<span class="gold"> · لـ'+esc(ac.for_whom)+'</span>':'')+bar(ac.status)
+ +'<p class="mut">العميل: '+esc(ac.client?ac.client.name:'')+(ac.client&&ac.client.phone?' · <a href="tel:'+esc(ac.client.phone)+'">'+esc(ac.client.phone)+'</a>':'')+'</p>'
+ +'<p class="mut">'+(ac.pay_method==='cash'?'حصّل كاش':'مدفوع أونلاين ('+PM[ac.pay_method]+')')+': '+f(ac.fixed_amount)+' ج'+(ac.time_based?' + المحلول بالوقت':'')+'</p>'
+ +(ac.status==='started'&&ac.time_based?'<p class="gold">مضى '+f(Math.floor((Date.now()-new Date(ac.started_at))/60000))+' دقيقة</p>':''));
+ h+=B('adv:'+ac.id,nx,'btn g')+B('sos:'+ac.id,'🚨 طوارئ','btn o').replace('class="btn o"','class="btn o" style="color:var(--bad)"');
 }else{
-h+='<div class="card" style="text-align:center"><h2>تمت الخدمة ✓</h2><p class="mut">'+(S.o.pm==='cash'?'ادفع '+f(S.o.t)+' ج كاش للممرضة':'تم خصم '+f(S.o.t)+' ج ('+pmn(S.o.pm)+')')+(S.o.tm?' · مدة المحلول '+f(S.o.mn)+' دقيقة':'')+'</p>'+(S.o.rep?'<p>🩺 ضغط '+S.o.rep.bp+' · سكر '+S.o.rep.sg+(S.o.rep.nt?'<br>'+S.o.rep.nt:'')+'</p>':'<p class="mut">الممرض بيكتب تقرير الزيارة…</p>')+'<div class="st">';
-for(var i=1;i<=5;i++)h+='<button class="'+(i<=S.rate?'on':'')+'" data-r="'+i+'" aria-label="'+i+' نجوم">★</button>';
-h+='</div>'+(S.o.cm?'<p class="ok">تم إرسال شكواك للإدارة ✓</p>':'<input id="cmt" placeholder="عندك شكوى؟ اكتبها هنا"><button class="btn o" data-a="cmpc">أرسل الشكوى</button>')+'<button class="btn g" data-a="again">طلب جديد</button></div>';
+ if(ld&&ld.status==='done'&&!d.rp[ld.id])h+='<h2>تقرير الزيارة</h2>'+card('<input id="rb" placeholder="الضغط (مثال ١٢٠/٨٠)"><input id="rs" placeholder="السكر (مثال ١١٠)"><input id="rn" placeholder="ملاحظات"><input id="cmn" placeholder="شكوى ضد العميل (اختياري)">'+B('rep:'+ld.id,'احفظ وأرسل','btn g'));
+ var nw=d.nw||[];
+ h+='<h2>طلبات قريبة ('+f(nw.length)+')</h2>';
+ if(!nw.length)h+=card('<span class="mut">مستني طلبات جديدة…</span>');
+ var fee=Number(d.cf.visit_fee),cm=Number(d.cf.commission);
+ nw.forEach(function(x){h+=card('<b>'+svn(x)+'</b>'+(x.for_whom!=='self'&&x.for_whom!=='لنفسي'?'<span class="gold"> · لـ'+esc(x.for_whom)+'</span>':'')+'<div class="row mut"><span>'+PM[x.pay_method]+'</span><span>دخلك: <span class="ok">'+f(x.fixed_amount-Math.round((x.fixed_amount-fee)*cm))+' ج</span>'+(x.time_based?' + المحلول':'')+'</span></div>'+B('acc:'+x.id,'اقبل','btn g'))});
 }
 return h}
 
-function prof(){
-var D=['شهادة التخرج','شهادة الامتياز','البطاقة (وش)','البطاقة (ضهر)','كارنيه النقابة','كارنيه مزاولة المهنة'],nw=S.reg==='new';
-var h='<h2>حالة الحساب: '+({ok:'موثّق ✓',pending:'قيد المراجعة',new:'غير مكتمل'})[S.reg]+'</h2><div class="card">';
-D.forEach(function(x,i){h+='<div class="row" style="padding:5px 0"><span>'+x+'</span><button class="sw'+(S.docs[i]?' on':'')+'" data-doc="'+i+'"'+(nw?'':' disabled')+'>'+(S.docs[i]?'تم الرفع ✓':'ارفع')+'</button></div>'});
-h+='</div><h2>عقد الانضمام</h2><div class="card"><p>١. ألتزم بسداد نسبة الشركة في موعدها.<br>٢. لا أتفق مع أي عميل جاني من الشركة على العمل خارج التطبيق.<br>٣. أقدّم الخدمات في حدود ترخيصي فقط.</p><button class="sw'+(S.sign?' on':'')+'" data-a="sign"'+(nw?'':' disabled')+'>'+(S.sign?'وقّعت ✓':'أوافق وأوقّع')+'</button></div>';
-h+=nw?'<button class="btn g" data-a="sub"'+((S.docs.every(Boolean)&&S.sign)?'':' disabled')+'>أرسل للمراجعة</button>':S.reg==='ok'?'<button class="btn o" data-a="newn">جرّب التسجيل كممرض جديد</button>':'<p class="mut">اتبعت للشركة. وافق عليه من تبويب «الشركة».</p>';
+/* ---------- الإدارة ---------- */
+function stBtns(id,st){return (st==='active'?B('ps:'+id+':suspended','إيقاف','sw'):B('ps:'+id+':active',st==='deleted'?'استرجاع':'تفعيل','sw'))+(st==='deleted'?'':B('ps:'+id+':deleted','حذف','sw'))}
+function cmH(l){return l.length?l.map(function(c){return '<p style="padding:6px 0;border-bottom:1px solid var(--line)"><b>'+(c.from_role==='client'?'من '+pn(c.client_id)+' ضد '+pn(c.nurse_id):'من '+pn(c.nurse_id)+' ضد '+pn(c.client_id))+'</b><br>'+esc(c.body)+'<br>'+(c.status==='open'?B('cr:'+c.id+':تحذير','تحذير','sw')+B('cr:'+c.id+':خصم','خصم','sw')+B('cr:'+c.id+':إيقاف','إيقاف الحساب','sw'):'<span class="ok">اتقفلت: '+esc(c.action)+'</span>')+'</p>'}).join(''):'<span class="mut">مفيش شكاوى</span>'}
+function admin(){
+var d=S.d,t=S.tab,tabs=[['o','نظرة'],['n','ممرضين'],['c','عملاء'],['k','شكاوى'],['i','طوارئ'],['r','طلبات']];
+var h=hero('لوحة الشركة','تحكم كامل')+B('out','خروج','sw')+'<div class="tabs">'+tabs.map(function(x){return B('t:'+x[0],x[1],t===x[0]&&!S.view?'on':'')}).join('')+'</div>';
+var pr=d.pr||[],od=d.o||[],done=od.filter(function(x){return x.status==='done'});
+if(S.view)return h+detail(S.view);
+if(t==='o'){
+ var g=0,c=0;done.forEach(function(x){g+=Number(x.total);c+=Number(x.commission)});
+ var debt=0;pr.forEach(function(p){if(p.role==='nurse')debt+=Number(nrs(p).debt||0)});
+ var pend=pr.filter(function(p){return p.role==='nurse'&&nrs(p).reg_status==='pending'});
+ h+='<div class="grid">'+K('إجمالي الحجوزات',f(g)+' ج')+K('عمولة الشركة',f(c)+' ج')+K('مستحق عند الممرضين',f(debt)+' ج')+K('طلبات مكتملة',f(done.length))+K('طوارئ مفتوحة',f((d.in||[]).filter(function(x){return x.status==='open'}).length))+K('شكاوى مفتوحة',f((d.cm||[]).filter(function(x){return x.status==='open'}).length))+'</div>';
+ h+='<h2>طلبات انضمام ('+f(pend.length)+')</h2>'+card(pend.length?pend.map(function(p){return '<div class="row" style="padding:5px 0"><span>'+esc(p.name)+'</span>'+B('v:n:'+p.id,'مراجعة','sw')+'</div>'}).join(''):'<span class="mut">مفيش</span>');
+ var cf=d.cf;
+ h+='<h2>الإعدادات</h2>'+card('<label class="mut">العمولة ٪</label><input id="s1" type="number" value="'+Math.round(cf.commission*100)+'"><label class="mut">رسوم الزيارة (للممرض)</label><input id="s2" type="number" value="'+cf.visit_fee+'"><label class="mut">المحلول لكل ربع ساعة</label><input id="s3" type="number" value="'+cf.iv_rate15+'"><label class="mut">حد المديونية</label><input id="s4" type="number" value="'+cf.debt_limit+'">'+B('set','حفظ الإعدادات','btn g'));
+}else if(t==='n'||t==='c'){
+ var ls=pr.filter(function(p){return p.role===(t==='n'?'nurse':'client')});
+ h+='<h2>'+(t==='n'?'الممرضين':'العملاء')+' ('+f(ls.length)+')</h2>'+card(ls.length?ls.map(function(p){var n=nrs(p);return '<button class="svc" data-a="v:'+t+':'+p.id+'" style="margin:0;border:0;border-bottom:1px solid var(--line);border-radius:0"><span class="t">'+esc(p.name||'—')+'<small>'+(t==='n'?({new:'غير مكتمل',pending:'قيد المراجعة',ok:'موثّق'})[n.reg_status]+' · ':'')+({active:'نشط',suspended:'موقوف',deleted:'محذوف'})[p.status]+'</small></span></button>'}).join(''):'<span class="mut">لسه مفيش</span>');
+}else if(t==='k'){h+='<h2>الشكاوى</h2>'+card(cmH(d.cm||[]))}
+else if(t==='i'){
+ h+='<h2>الطوارئ</h2>'+((d.in||[]).length?(d.in||[]).map(function(x){var s=x.steps&&x.steps.length?x.steps:[0,0,0,0];return card('<b class="'+(x.status==='open'?'bad':'ok')+'">'+(x.status==='open'?'🚨 مفتوح':'اتقفل')+' #'+x.id+'</b><p>من '+(x.by_role==='client'?'العميل':'الممرض')+' · '+pn(x.raised_by)+' · '+new Date(x.created_at).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})+'</p>'+(x.status==='open'?STP.map(function(l,i){return B('is:'+x.id+':'+i,l+(s[i]?' ✓':''),'sw'+(s[i]?' on':''))}).join('')+B('ir:'+x.id,'تم التعامل','btn g'):'<span class="mut">'+STP.filter(function(l,i){return s[i]}).join('، ')+'</span>'))}).join(''):card('<span class="mut">مفيش حوادث</span>'));
+}else{
+ h+='<h2>آخر الطلبات</h2><div class="card x"><table><tr><th>#</th><th>الخدمة</th><th>الحالة</th><th>المبلغ</th><th>عمولة</th></tr>'+od.slice(0,40).map(function(x){return '<tr><td>'+f(x.id)+'</td><td>'+svn(x)+'</td><td>'+STL[x.status]+'</td><td>'+(x.total?f(x.total):'—')+'</td><td>'+(x.commission!=null?f(x.commission):'—')+'</td></tr>'}).join('')+'</table></div>';
+}
 return h}
-function nurse(){
-var h='<div class="hero"><div class="row"><div><h1 style="font-size:1.6rem">'+N.name+'</h1><p>'+N.lic+' · '+tier(vis())+'</p></div><button class="sw'+(S.on?' on':'')+'" data-a="tog" aria-pressed="'+S.on+'">'+(S.on?'متاح':'غير متاح')+'</button></div></div>';
-h+='<div class="tabs" style="position:static;margin-top:10px"><button class="'+(S.np!=='p'?'on':'')+'" data-np="o">الطلبات</button><button class="'+(S.np==='p'?'on':'')+'" data-np="p">ملفي</button></div>';
-if(S.np==='p')return h+prof();
-h+='<div class="grid"><div class="k"><span class="mut">دخل اليوم</span><b>'+f(S.earn)+' ج</b></div><div class="k"><span class="mut">زيارات اليوم</span><b>'+f(S.log.length-4)+'</b></div><div class="k"><span class="mut">رصيد قابل للسحب</span><b class="ok">'+f(S.bal||0)+' ج</b></div></div>';
-h+='<div class="card"><div class="row"><span>مستحق للشركة ('+f(Math.round(PCT*100))+'٪)</span><b class="'+(S.debt>LIM*.8?'':'gold')+'" style="'+(S.debt>LIM*.8?'color:var(--bad)':'')+'">'+f(S.debt)+' ج</b></div><div class="bar"><i style="width:'+Math.min(100,S.debt/LIM*100)+'%"></i></div><p class="mut">الحد الأقصى '+f(LIM)+' ج، بعدها الحساب يتوقف لحد التسديد.</p><button class="btn o" data-a="pay"'+(S.debt?'':' disabled')+'>سدّد عبر إنستاباي</button></div>';
-var o=S.o;
-if(o&&o.st==='new'&&S.on&&S.reg==='ok'&&S.nu[0].st==='active'){
-h+='<h2>طلب جديد 🔔</h2><div class="card"><b>'+o.names+'</b>'+(o.fam&&o.fam!=='لنفسي'?'<span class="gold"> · لـ'+o.fam+'</span>':'')+'<div class="row mut"><span>٢٫٤ كم · سموحة</span><span>دخلك: <span class="ok">'+f(o.fx-Math.round((o.fx-FEE)*PCT))+' ج</span></span></div><div class="row" style="gap:8px"><button class="btn g" data-a="acc">اقبل</button><button class="btn o" data-a="rej">ارفض</button></div></div>';
-}else if(o&&o.st==='done'&&!o.rep){h+='<h2>تقرير الزيارة</h2><div class="card"><input id="rb" placeholder="الضغط (مثال ١٢٠/٨٠)"><input id="rs" placeholder="السكر (مثال ١١٠)"><input id="rn" placeholder="ملاحظات"><input id="cmn" placeholder="شكوى ضد العميل (اختياري)"><button class="btn g" data-a="rep">احفظ وأرسل التقرير</button></div>'}else if(o&&o.st!=='new'&&o.st!=='done'){
-var nx={accepted:'وصلت للعميل',arrived:'ابدأ الخدمة',started:'أنهِ واستلم الكاش'}[o.st];
-h+='<h2>الزيارة الحالية</h2><div class="card"><b>'+o.names+'</b>'+stepsBar()+'<p class="mut">'+(o.pm==='cash'?'حصّل كاش: ':'مدفوع أونلاين ('+pmn(o.pm)+'): ')+f(cur(o))+' ج'+(o.tm&&o.st==='started'?' · مضى '+f(el(o))+' دقيقة':'')+'</p>'+(o.tm&&o.st==='started'?'<button class="btn o" data-a="ff">⏩ تسريع ١٥ دقيقة (للتجربة)</button>':'')+'<button class="btn g" data-a="next">'+nx+'</button>'+(S.nsos?'<p class="ok">تم إبلاغ الشركة ✓</p>':'<button class="btn o" data-a="sosn" style="color:var(--bad)">🚨 طوارئ</button>')+'</div>';
-}else h+='<div class="card mut" style="text-align:center;margin-top:16px">'+(S.nu[0].st!=='active'?'حسابك موقوف. تواصل مع الشركة.':S.reg!=='ok'?'حسابك لسه مش موثّق. كمّل ملفك واستنى موافقة الشركة.':S.on?'مستني طلبات قريبة منك…':'فعّل «متاح» عشان تستقبل طلبات.')+'</div>';
+function detail(V){
+var d=S.d,p=(d.pr||[]).filter(function(x){return x.id===V.id})[0];if(!p)return B('bk','‹ رجوع','sw');
+var n=nrs(p),isN=p.role==='nurse',os=(d.o||[]).filter(function(x){return (isN?x.nurse_id:x.client_id)===p.id}),dn=os.filter(function(x){return x.status==='done'});
+var tt=dn.reduce(function(a,x){return a+Number(x.total)},0),cs=(d.cm||[]).filter(function(c){return (isN?c.nurse_id:c.client_id)===p.id});
+var h=B('bk','‹ رجوع','sw')+hero(esc(p.name||'—'),esc(p.phone||'')+' · '+({active:'نشط',suspended:'موقوف',deleted:'محذوف'})[p.status])+card(stBtns(p.id,p.status)+(isN&&n.reg_status==='pending'?B('ap:'+p.id,'وافق على الانضمام ✓','btn g'):''));
+h+='<div class="grid">'+K('الخدمات',f(dn.length))+K('الإجمالي',f(tt)+' ج')+(isN?K('تقييم',n.rating?'⭐ '+n.rating:'—')+K('مديونية',f(n.debt)+' ج'):K('شكاوى',f(cs.length)))+'</div>';
+if(isN){
+ h+=card(B('dc:'+p.id,'عرض المستندات','sw')+(n.debt>0?B('pd:'+p.id,'تسجيل سداد المديونية','sw'):'')+(S.urls[p.id]?'<p>'+S.urls[p.id].map(function(u){return '<a href="'+u.u+'" target="_blank" rel="noopener">'+esc(u.n)+'</a>'}).join(' · ')+'</p>':''));
+}
+h+='<h2>الشكاوى</h2>'+card(cmH(cs))+'<h2>الطلبات</h2><div class="card x"><table><tr><th>'+(isN?'العميل':'الممرض')+'</th><th>الخدمة</th><th>المبلغ</th></tr>'+os.slice(0,10).map(function(x){return '<tr><td>'+esc((isN?x.client:x.nurse)?(isN?x.client:x.nurse).name:'—')+'</td><td>'+svn(x)+'</td><td>'+(x.total?f(x.total):'—')+'</td></tr>'}).join('')+'</table></div>';
 return h}
 
-function ctl(l,v,k){return '<div class="card row"><span>'+l+'</span><span class="row" style="flex:none;gap:10px"><button class="sw" data-'+k+'="-1" aria-label="قلل">−</button><b class="gold">'+v+'</b><button class="sw" data-'+k+'="1" aria-label="زوّد">+</button></span></div>'}
-function cmo(l){return l.cm!=null?l.cm:Math.round((l.t-FEE)*PCT)}
-function adminOv(){
-var g=0,c=0,co=0,n=S.log.length,on=0;
-S.log.forEach(function(l){g+=l.t;c+=cmo(l);if(l.pm&&l.pm!=='cash'){co+=cmo(l);on++}});
-var h='<div class="hero"><h1 style="font-size:1.6rem">لوحة الشركة</h1><p>الإسكندرية · تحكم كامل</p></div>'+alerts()+'<div class="grid">';
-[['إجمالي الحجوزات',f(g)+' ج',''],['عمولة الشركة',f(c)+' ج','gold'],['محصّل تلقائي',f(co)+' ج','ok'],['مستحق عند الممرضين',f(S.debt)+' ج',''],['متوسط الطلب',f(Math.round(g/n))+' ج',''],['دفع أونلاين',f(Math.round(on/n*100))+'٪',''],['حوادث مفتوحة',f(S.inc.filter(function(x){return x.st==='open'}).length),'']].forEach(function(k){h+='<div class="k"><span class="mut">'+k[0]+'</span><b class="'+k[2]+'">'+k[1]+'</b></div>'});
-h+='</div><h2>التحكم</h2>'+ctl('عمولة الشركة',f(Math.round(PCT*100))+'٪','p')+ctl('رسوم الزيارة (للممرض)',f(FEE)+' ج','f')+ctl('المحلول لكل ربع ساعة',f(S.r15)+' ج','v')+'<p class="mut">العمولة على سعر الخدمة بس، ورسوم الزيارة كلها للممرض.</p>';
-h+='<h2>توثيق الممرضين ('+f(S.ver)+' موثّق)</h2><div class="card">'+(S.pend.length?S.pend.map(function(p,i){return '<div class="row" style="padding:6px 0"><span>'+p+'</span><button class="sw" data-ap="'+i+'">وثّق ✓</button></div>'}).join(''):'<span class="mut">مفيش طلبات انضمام معلقة</span>')+'</div>';
-h+=incLog()+waLog()+drsAdm()+coAdm();
-h+='<h2>آخر الطلبات</h2><div class="card x"><table><tr><th>#</th><th>الخدمة</th><th>الدفع</th><th>المدة</th><th>المبلغ</th><th>عمولة</th></tr>';
-S.log.slice().reverse().forEach(function(l){h+='<tr><td>'+f(l.id)+'</td><td>'+l.s+'</td><td>'+pmn(l.pm)+'</td><td>'+(l.mn?f(l.mn)+'د':'-')+'</td><td>'+f(l.t)+'</td><td>'+f(cmo(l))+'</td></tr>'});
-return h+'</table></div>'}
-
+/* ---------- الرسم ---------- */
 function render(){
-document.querySelectorAll('.tabs button[data-m]').forEach(function(b){b.classList.toggle('on',b.dataset.m===S.m)});
-try{var oc=S.inc.filter(function(x){return x.st==='open'}).length+S.cmp.filter(function(x){return x.st==='open'}).length;document.querySelector('.tabs button[data-m=a]').textContent='الشركة'+(oc?' 🔴'+oc:'')}catch(e){}
-document.getElementById('v').innerHTML=S.m==='c'?client():S.m==='n'?nurse():S.m==='a'?admin():rules()}
+var h=!S.u?authV():!S.p?card('<span class="mut">جاري التحميل…</span>'):S.p.role==='admin'?admin():S.p.role==='nurse'?nurseV():clientV();
+document.getElementById('v').innerHTML=h+(S.toast?'<div class="toast" role="status">'+esc(S.toast)+'</div>':'')}
 
+/* ---------- الأحداث ---------- */
 document.addEventListener('click',function(e){
-var b=e.target.closest('button');if(!b)return;var d=b.dataset;
-if(d.m){S.m=d.m}
-else if(d.s){S.sel[d.s]=!S.sel[d.s]}
-else if(d.r){S.rate=+d.r;var lo=S.ords[S.ords.length-1];if(S.o&&S.o.st==='done'&&lo&&lo.cl===1)lo.rt=+d.r}
-else if(d.ap!==undefined){if(S.pend[+d.ap]===N.name)S.reg='ok';S.pend.splice(+d.ap,1);S.ver++}
-else if(d.f){FEE=Math.max(0,FEE+(+d.f)*10);S.fee=FEE}
-else if(d.v){S.r15=Math.max(5,S.r15+(+d.v)*5)}
-else if(d.np){S.np=d.np}
-else if(d.doc!==undefined){S.docs[+d.doc]=S.docs[+d.doc]?0:1}
-else if(d.pm){S.pm=d.pm}
-else if(d.fam){S.fam=d.fam}
-else if(d.av){S.av=d.av;S.pn=0;S.pc=0}
-else if(d.pn){S.pn=+d.pn}
-else if(d.pc){S.pc=+d.pc}
-else if(d.bk){S.pn=0;S.pc=0}
-else if(d.ns){var q1=d.ns.split(':');setst(S.nu,+q1[0],q1[1])}
-else if(d.cs){var q3=d.cs.split(':');setst(S.cl,+q3[0],q3[1])}
-else if(d.cr){var q2=d.cr.split(':'),cc=S.cmp.filter(function(z){return z.id===+q2[0]})[0];if(cc){cc.st='closed';cc.act=({w:'تحذير',f:'خصم',s:'إيقاف الحساب'})[q2[1]];if(q2[1]==='s'){if(cc.from==='client')setst(S.nu,cc.nu,'sus');else setst(S.cl,cc.cl,'sus')}}}
-else if(d.pl!==undefined){var pp=PL[+d.pl];S.sub={n:pp[0],left:pp[2]};wa('العميل','تم الاشتراك في باقة '+pp[0])}
-else if(d.is){var q=d.is.split(':'),x=S.inc.filter(function(y){return y.id===+q[0]})[0];if(x)x.sp[+q[1]]=x.sp[+q[1]]?0:1}
-else if(d.ir){var y2=S.inc.filter(function(z){return z.id===+d.ir})[0];if(y2){y2.st='done';y2.rt=tmn()}}
-else if(d.dd!==undefined){S.drs.splice(+d.dd,1)}
-else if(d.p){PCT=Math.min(.6,Math.max(0,Math.round((PCT+(+d.p)*.05)*100)/100));S.pct=PCT}
-else if(d.a){var a=d.a;
- if(a==='req'){S.o={st:'new',t:tot(),fx:tot(),names:names(),pm:S.pm,tm:!!S.sel[6],fam:S.fam,abr:S.abroad&&S.fam!=='لنفسي'};wa('الممرضين القريبين','طلب جديد: '+names());S.rate=0}
- else if(a==='cancel'||a==='rej'){S.o=a==='cancel'?null:S.o;if(a==='cancel')S.sel={}}
- else if(a==='acc'){S.o.st='accepted';S.o.ta=Date.now();wa(S.o.abr?'العميل (خارج مصر)':'العميل','الممرضة '+N.name+' قبلت الطلب وفي الطريق')}
- else if(a==='next'){var i=si();S.o.st=ST[i+1];
-  if(S.o.st==='started'){S.o.t0=Date.now();S.o.off=0}
-  if(S.o.st==='done'){var o=S.o,mn=el(o);o.mn=mn;o.t=bill(o);var cm=Math.round((o.t-FEE)*PCT),nt=o.t-cm;o.cm=cm;
-   if(o.pm==='cash'){S.debt+=cm}else{S.bal=(S.bal||0)+nt}
-   S.earn+=nt;if(S.sub&&S.sub.left>0)S.sub.left--;wa('العميل','فاتورة '+f(o.t)+' ج · '+pmn(o.pm));S.ords.push({id:200+S.ords.length,cl:1,nu:1,s:o.names,t:o.t,rt:0,pm:o.pm});S.log.push({id:100+S.log.length+1,s:o.names,t:o.t,n:'منى',pm:o.pm,mn:mn,cm:cm})}}
- else if(a==='ff'){S.o.off+=15}
- else if(a==='again'){S.o=null;S.sel={};S.rx=false;S.sos=false;S.nsos=false}
- else if(a==='tog'){S.on=!S.on}
- else if(a==='pay'){S.debt=0}
- else if(a==='rx'){S.rx=!S.rx}
- else if(a==='sign'){S.sign=!S.sign}
- else if(a==='sub'){S.reg='pending';S.pend.unshift(N.name)}
- else if(a==='newn'){S.reg='new';S.docs=[0,0,0,0,0,0];S.sign=false}
- else if(a==='sos'){S.sos=true;mkinc('العميل')}
- else if(a==='abr'){S.abroad=!S.abroad}
- else if(a==='cmpc'){var ct=esc(document.getElementById('cmt').value.trim());if(ct){S.cmp.unshift({id:S.cmp.length+1,from:'client',cl:1,nu:1,txt:ct,st:'open',tm:tmn()});S.o.cm=true;wa('إدارة الشركة','شكوى جديدة من العميل')}}
- else if(a==='rep'){var bp=esc(document.getElementById('rb').value.trim()),sg=esc(document.getElementById('rs').value.trim()),nt=esc(document.getElementById('rn').value.trim());S.o.rep={bp:bp,sg:sg,nt:nt};S.recs.unshift({d:tmn(),svc:S.o.names,bp:bp,sg:sg,nt:nt,w:S.o.fam});wa(S.o.abr?'العميل (خارج مصر)':'العميل','تقرير الزيارة: ضغط '+bp+' · سكر '+sg);var cm2=esc(document.getElementById('cmn').value.trim());if(cm2){S.cmp.unshift({id:S.cmp.length+1,from:'nurse',cl:1,nu:1,txt:cm2,st:'open',tm:tmn()});wa('إدارة الشركة','شكوى جديدة من الممرض')}}
- else if(a==='adc'){var cn=esc(document.getElementById('cn').value.trim()),ce=+document.getElementById('ce').value,cp=+document.getElementById('cp').value;if(cn&&ce>0&&cp>0)S.co.push({n:cn,e:ce,v:2,p:cp})}
- else if(a==='sosn'){S.nsos=true;mkinc('الممرض')}
- else if(a==='adr'){var n1=document.getElementById('dn').value.trim(),p1=document.getElementById('dp').value.trim();if(n1&&p1)S.drs.push({n:esc(n1),sp:'استشاري',ph:p1})}
-}
-sv();render()});
-render();
-setInterval(function(){if(S.o&&(S.m==='c'||S.m==='n')&&(S.o.st==='accepted'||(S.o.st==='started'&&S.o.tm)))render()},4000);
+var b=e.target.closest('button');if(!b||!b.dataset.a)return;
+var a=b.dataset.a.split(':'),c=a[0],x=a[1],y=a[2],uid=S.u&&S.u.id;
+if(c==='m'){S.mode=x;return render()}
+if(c==='r'){S.role=x;return render()}
+if(c==='t'){S.tab=x;S.view=null;return render()}
+if(c==='v'){S.view={t:x,id:y};S.tab=x;return render()}
+if(c==='bk'){S.view=null;return render()}
+if(c==='sel'){S.sel[x]=!S.sel[x];return render()}
+if(c==='fam'){S.fam=x;if(x==='لنفسي')S.abr=false;return render()}
+if(c==='pm'){S.pm=x;return render()}
+if(c==='abr'){S.abr=!S.abr;return render()}
+if(c==='sign'){S.sign=!S.sign;return render()}
+if(c==='dis'){localStorage.setItem('sd'+x,'1');return render()}
+if(c==='si')return run(async function(){var r=q(await SB.auth.signInWithPassword({email:val('em'),password:val('pw')}));S.u=r.user});
+if(c==='su')return run(async function(){
+ var r=await SB.auth.signUp({email:val('em'),password:val('pw'),options:{data:{role:S.role,name:val('nm'),phone:val('ph')}}});if(r.error)throw r.error;
+ if(!r.data.session){S.mode='in';throw new Error('اتبعتلك إيميل تأكيد. أكّده وارجع ادخل.')}S.u=r.data.session.user});
+if(c==='out'){SB.auth.signOut();S.u=null;S.p=null;S.d={};S.j='';S.view=null;return render()}
+run(async function(){
+ var R=async function(n,p){q(await SB.rpc(n,p))};
+ if(c==='req'){var ids=Object.keys(S.sel).filter(function(k){return S.sel[k]}).map(Number);await R('create_order',{p_services:ids,p_pay:S.pm,p_for:S.fam,p_abroad:S.abr});S.sel={}}
+ else if(c==='cancel')await R('cancel_order',{p_id:+x})
+ else if(c==='sos'){await R('raise_incident',{p_order:+x});say('تم إبلاغ الشركة ✓. لو الحياة في خطر اتصل ١٢٣')}
+ else if(c==='rate')await R('rate_order',{p_id:+x,p_stars:+y})
+ else if(c==='cmp'){var t=val('cmt');if(!t)return;var o=S.d.o.filter(function(z){return z.id==x})[0];q(await SB.from('complaints').insert({from_role:'client',client_id:uid,nurse_id:o.nurse_id,order_id:o.id,body:t}));say('اتبعتت شكواك للإدارة ✓')}
+ else if(c==='acc')await R('accept_order',{p_id:+x})
+ else if(c==='adv')await R('advance_order',{p_id:+x})
+ else if(c==='rep'){await R('save_report',{p_id:+x,p_bp:val('rb'),p_sugar:val('rs'),p_notes:val('rn')});var cm=val('cmn');if(cm){var o2=S.d.o.filter(function(z){return z.id==x})[0];q(await SB.from('complaints').insert({from_role:'nurse',client_id:o2.client_id,nurse_id:uid,order_id:o2.id,body:cm}))}}
+ else if(c==='subn')await R('submit_nurse',{p_docs:S.d.up})
+ else if(c==='ps')q(await SB.from('profiles').update({status:y}).eq('id',x))
+ else if(c==='ap')q(await SB.from('nurses').update({reg_status:'ok'}).eq('id',x))
+ else if(c==='pd')q(await SB.from('nurses').update({debt:0}).eq('id',x))
+ else if(c==='dc'){var fl=q(await SB.storage.from('nurse-docs').list(x));var us=[];for(var i=0;i<fl.length;i++){var s=await SB.storage.from('nurse-docs').createSignedUrl(x+'/'+fl[i].name,600);if(s.data)us.push({n:(DOCS.filter(function(z){return z[0]===fl[i].name.split('.')[0]})[0]||[0,fl[i].name])[1],u:s.data.signedUrl})}S.urls[x]=us}
+ else if(c==='cr'){var cc=S.d.cm.filter(function(z){return z.id==x})[0];q(await SB.from('complaints').update({status:'closed',action:y}).eq('id',x));if(y==='إيقاف')q(await SB.from('profiles').update({status:'suspended'}).eq('id',cc.from_role==='client'?cc.nurse_id:cc.client_id))}
+ else if(c==='is'){var inc=S.d.in.filter(function(z){return z.id==x})[0],st=inc.steps&&inc.steps.length?inc.steps.slice():[0,0,0,0];st[y]=st[y]?0:1;q(await SB.from('incidents').update({steps:st}).eq('id',x))}
+ else if(c==='ir')q(await SB.from('incidents').update({status:'closed',resolved_at:new Date().toISOString()}).eq('id',x))
+ else if(c==='set'){q(await SB.from('settings').update({commission:(+val('s1'))/100,visit_fee:+val('s2'),iv_rate15:+val('s3'),debt_limit:+val('s4')}).eq('id',1));say('اتحفظت ✓')}
+})});
+document.addEventListener('change',function(e){var k=e.target.dataset&&e.target.dataset.doc,fl=e.target.files&&e.target.files[0];if(!k||!fl)return;
+ run(async function(){var ext=(fl.name.split('.').pop()||'jpg').toLowerCase();q(await SB.storage.from('nurse-docs').upload(S.u.id+'/'+k+'.'+ext,fl,{upsert:true}))})});
+setInterval(function(){var a=document.activeElement;if(S.u&&!(a&&/INPUT|TEXTAREA/.test(a.tagName)))load().catch(function(){})},4000);
+(async function(){try{var r=await SB.auth.getSession();S.u=r.data.session?r.data.session.user:null;if(S.u)await load(true);else render()}catch(e){render();say('مشكلة في الاتصال')}})();
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js')}catch(e){}
 </script>
 </body>
