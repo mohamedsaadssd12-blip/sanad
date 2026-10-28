@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>سَنَد – تمريض منزلي</title>
 <meta name="theme-color" content="#0F1B2D"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F3F4F6;--card:#fff;--ink:#0F1B2D;--mut:#667085;--gold:#A8843E;--line:#E2E5EA;--ok:#2E8F76;--bad:#C2503D;--hero:#0F1B2D;--herotx:#F3F4F6;--herogold:#D8B974;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -33,17 +34,19 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
 .sw.on{background:var(--ok);color:#fff;border-color:var(--ok)}
 input,textarea{width:100%;font:inherit;padding:11px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);margin-top:8px}
 table{width:100%;border-collapse:collapse;font-size:.85rem}td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right}th{color:var(--mut);font-weight:400}.x{overflow-x:auto}
-.toast{position:fixed;inset:auto 16px calc(16px + env(safe-area-inset-bottom,0px));max-width:440px;margin:auto;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;font-weight:600;text-align:center;z-index:9}
+.toast{position:fixed;inset:auto 16px calc(16px + env(safe-area-inset-bottom,0px));max-width:440px;margin:auto;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;font-weight:600;text-align:center;z-index:2000}
 .st button{background:none;border:0;font-size:1.8rem;cursor:pointer;color:var(--line);min-width:44px;min-height:44px}.st button.on{color:var(--gold)}
+.av{width:46px;height:46px;border-radius:50%;background:var(--hero);color:var(--herogold);display:grid;place-items:center;font-weight:700;flex:none}
 a{color:var(--gold)}
 </style>
 </head>
 <body>
 <main id="v"></main>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 var SB=supabase.createClient('https://tsxvmmzhqrpwostxlgce.supabase.co','sb_publishable_lH02LIooEUgGRjnlNlPduw_vjt3lSbj');
-var S={u:null,p:null,d:{},mode:'in',role:'client',sel:{},fam:'لنفسي',pm:'cash',abr:false,sign:false,tab:'o',view:null,toast:'',j:'',urls:{}};
+var S={u:null,p:null,d:{},mode:'in',role:'client',sel:{},fam:'لنفسي',pm:'cash',abr:false,sign:false,tab:'o',view:null,toast:'',j:'',urls:{},np:null,loc:null,pv:false};
 var PM={cash:'كاش',insta:'إنستاباي',wal:'محفظة',card:'حساب بنكي'};
 var STL={new:'بندوّر على ممرض…',accepted:'الممرض في الطريق',arrived:'الممرض وصل',started:'الخدمة جارية',done:'تمت الخدمة',cancelled:'اتلغى'};
 var SI=['accepted','arrived','started','done'];
@@ -68,7 +71,7 @@ async function load(force){
   if(!S.u)return;
   var p=q(await SB.from('profiles').select('*,nurses(*)').eq('id',S.u.id).single()),d={};
   d.cf=q(await SB.from('settings').select('*').single());
-  var oj='*,nurse:profiles!nurse_id(name,phone),client:profiles!client_id(name,phone)';
+  var oj='*,nurse:profiles!nurse_id(name,phone,nurses(rating,visits)),client:profiles!client_id(name,phone)';
   if(p.role==='client'){
     d.sv=q(await SB.from('services').select('*').eq('active',true).order('id'));
     d.o=q(await SB.from('orders').select(oj).eq('client_id',S.u.id).order('id',{ascending:false}).limit(15));
@@ -86,12 +89,31 @@ async function load(force){
     d.cm=q(await SB.from('complaints').select('*').order('id',{ascending:false}));
     d.in=q(await SB.from('incidents').select('*').order('id',{ascending:false}));
   }
-  if(p.role!=='nurse'||nrs(p).reg_status==='ok'){var rp=q(await SB.from('reports').select('*'));d.rp={};rp.forEach(function(r){d.rp[r.order_id]=r})}
-  var j=JSON.stringify([p,d,Math.floor(Date.now()/60000)]);
+  if(p.role!=='nurse'||nrs(p).reg_status==='ok'){var rp=q(await SB.from('reports').select('*'));d.rp={};rp.forEach(function(r){d.rp[r.order_id]=r});var ol=q(await SB.from('order_loc').select('*'));d.ol={};ol.forEach(function(r){d.ol[r.order_id]=r})}
+  if(p.role==='nurse'&&nrs(p).reg_status==='ok')track();
+  var j=JSON.stringify([p,d,Math.floor(Date.now()/60000),S.np?S.np.lat.toFixed(4)+S.np.lng.toFixed(4):'']);
   if(force||j!==S.j){S.j=j;S.p=p;S.d=d;render()}
 }
 async function run(fn){try{await fn();await load(true)}catch(e){say(e.message||'حصل خطأ')}}
 
+function na(x){var n=x&&x.nurses;return Array.isArray(n)?n[0]||{}:n||{}}
+function tier(v){return v>=30?'🥇 ذهبي':v>=10?'🥈 فضي':'🥉 برونزي'}
+function dist(a,b){var R=6371,t=Math.PI/180,dl=(b.lat-a.lat)*t,dn=(b.lng-a.lng)*t,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
+function tel(ph){var d=String(ph).replace(/\D/g,''),w=d.charAt(0)==='0'?'2'+d:d;return '<a class="sw" href="tel:'+esc(ph)+'">📞 اتصال</a><a class="sw" target="_blank" rel="noopener" href="https://wa.me/'+w+'">💬 واتساب</a>'}
+function getPos(){return new Promise(function(res,rej){if(!navigator.geolocation)return rej(new Error('المتصفح لا يدعم تحديد الموقع'));navigator.geolocation.getCurrentPosition(function(p){res({lat:p.coords.latitude,lng:p.coords.longitude})},function(){rej(new Error('اسمح للتطبيق بالوصول لموقعك من إعدادات المتصفح'))},{enableHighAccuracy:true,timeout:15000})})}
+function track(){if(S.tw||!navigator.geolocation)return;S.tw=navigator.geolocation.watchPosition(function(p){S.np={lat:p.coords.latitude,lng:p.coords.longitude}},function(){},{enableHighAccuracy:true,maximumAge:5000})}
+function sendLoc(){var o=S.d&&S.d.o,a=S.p&&S.p.role==='nurse'&&o&&o.filter(function(x){return x.status==='accepted'||x.status==='arrived'})[0];if(!a||!S.np||Date.now()-(S.ls||0)<7000)return;S.ls=Date.now();SB.rpc('update_location',{p_id:a.id,p_lat:S.np.lat,p_lng:S.np.lng}).then(function(){})}
+var MAP=null,MEL=null,MK={};
+function mk(k,pt,em){if(!pt){if(MK[k]){MAP.removeLayer(MK[k]);MK[k]=null}return}var ll=[pt.lat,pt.lng];if(MK[k])MK[k].setLatLng(ll);else MK[k]=L.marker(ll,{icon:L.divIcon({html:'<div style="font-size:26px;line-height:30px">'+em+'</div>',className:'',iconSize:[30,30],iconAnchor:[15,15]})}).addTo(MAP)}
+function mapFor(a,b){var ph=document.getElementById('mph');if(!ph||!window.L)return;
+ if(!MEL){MEL=document.createElement('div');MEL.style.cssText='height:240px;border-radius:14px;margin-top:10px';MAP=L.map(MEL).setView([a.lat,a.lng],14);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(MAP)}
+ ph.replaceWith(MEL);MAP.invalidateSize();mk('c',a,'🏠');mk('n',b,'🩺');
+ var key=a.lat+','+a.lng+(b?'|'+b.lat.toFixed(3)+','+b.lng.toFixed(3):'');
+ if(MAP._k!==key){MAP._k=key;if(b)MAP.fitBounds([[a.lat,a.lng],[b.lat,b.lng]],{padding:[30,30],maxZoom:16});else MAP.setView([a.lat,a.lng],15)}}
+function etaTxt(o,ol){if(o.nurse_lat==null||!ol)return 'بستنى موقع الممرض…';if(o.status==='arrived')return 'الممرض وصل';var k=dist({lat:+o.nurse_lat,lng:+o.nurse_lng},{lat:+ol.lat,lng:+ol.lng});return 'يبعد '+f(Math.round(k*10)/10)+' كم · حوالي '+f(Math.max(1,Math.round(k/25*60)))+' دقيقة'}
+function nurseCard(n){var x=na(n),v=x.visits||0;return '<div class="row" style="justify-content:flex-start;gap:12px"><div class="av">'+esc((n.name||'م').charAt(0))+'</div><div style="flex:1"><b>'+esc(n.name||'ممرض')+'</b> <span class="ok">✓ موثّق</span><div class="mut">'+(x.rating?'⭐ '+x.rating:'جديد')+' · '+f(v)+' زيارة · '+tier(v)+'</div></div></div>'+(n.phone?'<div>'+tel(n.phone)+'</div>':'')}
+function navBlock(o){var ol=S.d.ol&&S.d.ol[o.id];if(!ol)return '';S.mp={a:{lat:+ol.lat,lng:+ol.lng},b:S.np};return card('<b>📍 العنوان</b><p>'+esc(ol.addr||'—')+'</p><a class="sw" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+ol.lat+','+ol.lng+'">🧭 افتح الاتجاهات</a><div id="mph"></div>')}
+function profV(){var p=S.p,fo=!p.name||!p.phone;return hero(fo?'كمّل بياناتك':'بياناتي','الاسم والموبايل بيظهروا للطرف التاني في الزيارة')+card('<label class="mut">الاسم</label><input id="pn" value="'+esc(p.name)+'" placeholder="الاسم"><label class="mut">الموبايل</label><input id="pp" value="'+esc(p.phone)+'" inputmode="tel" placeholder="01xxxxxxxxx"><p class="mut">الإيميل: '+esc(S.u.email)+'</p>'+B('savep','حفظ','btn g')+(fo?'':B('prof','رجوع','btn o')))}
 /* ---------- الدخول ---------- */
 function authV(){var up=S.mode==='up';
 return hero('سَنَد','تمريض منزلي بمستوى فندقي')+card('<div class="tabs" style="margin-top:0">'+B('m:in','دخول',up?'':'on')+B('m:up','حساب جديد',up?'on':'')+'</div>'
@@ -101,7 +123,8 @@ return hero('سَنَد','تمريض منزلي بمستوى فندقي')+card('
 /* ---------- العميل ---------- */
 function clientV(){
 var p=S.p,d=S.d,o=d.o||[],ac=o.filter(function(x){return ['new','accepted','arrived','started'].indexOf(x.status)>-1})[0];
-var h=hero('أهلاً '+esc(p.name||''),'ممرض مرخّص يوصلك البيت')+B('out','خروج','sw');
+if(S.pv||!p.name||!p.phone)return profV();
+var h=hero('أهلاً '+esc(p.name||''),'ممرض مرخّص يوصلك البيت')+B('prof','بياناتي','sw')+B('out','خروج','sw');
 if(p.status!=='active')return h+card('<b class="bad">حسابك موقوف. تواصل مع الشركة.</b>');
 if(ac)h+=activeC(ac);
 else{
@@ -115,15 +138,19 @@ else{
  if(S.fam!=='لنفسي')h+=B('abr','✈️ أنا خارج مصر، ابعتلي التقرير','svc'+(S.abr?' on':''));
  h+='<h2>طريقة الدفع</h2><div class="grid">'+Object.keys(PM).map(function(k){return B('pm:'+k,PM[k],'svc'+(S.pm===k?' on':''))}).join('')+'</div>';
  h+=card('<div class="row"><span class="mut">رسوم الزيارة</span><span>'+f(fee)+' ج</span></div><div class="row"><b>الإجمالي</b><span class="gold">'+(any?f(t+Number(fee)):'—')+' ج</span></div>'+(S.sel[6]?'<p class="mut">المحلول: '+f(d.cf.iv_rate15)+' ج كل ربع ساعة، بيتحسب بالوقت الفعلي.</p>':''));
- h+='<button class="btn g" data-a="req"'+(any?'':' disabled')+'>اطلب ممرض الآن</button>';
+ h+=card('<b>📍 موقعك</b><p class="mut">'+(S.loc?'تم تحديد موقعك ✓':'لازم نحدد موقعك عشان الممرض يوصلك')+'</p>'+B('loc',S.loc?'تحديث الموقع':'حدّد موقعي','sw'+(S.loc?' on':''))+'<input id="ad" placeholder="العنوان بالتفصيل (عمارة، دور، شقة)">');
+ h+='<button class="btn g" data-a="req"'+(any&&S.loc?'':' disabled')+'>اطلب ممرض الآن</button>';
  var hs=o.filter(function(x){return x.status==='done'||x.status==='cancelled'});
  if(hs.length)h+='<h2>طلباتي السابقة</h2>'+card(hs.map(function(x){return '<div class="row" style="padding:5px 0"><span>'+svn(x)+'<br><small class="mut">'+new Date(x.created_at).toLocaleDateString('ar-EG')+' · '+STL[x.status]+'</small></span><b>'+(x.total?f(x.total)+' ج':'—')+'</b></div>'}).join(''));
 }
 return h}
 function activeC(o){
-var h=card('<b>'+svn(o)+'</b>'+bar(o.status)+'<p style="margin-top:8px"><b>'+STL[o.status]+'</b></p>'+(o.nurse?'<p class="mut">الممرض: '+esc(o.nurse.name)+(o.nurse.phone?' · <a href="tel:'+esc(o.nurse.phone)+'">'+esc(o.nurse.phone)+'</a>':'')+'</p>':'')
+var ol=S.d.ol&&S.d.ol[o.id],n=o.nurse,live=o.status==='accepted'||o.status==='arrived';
+var h=card('<b>'+svn(o)+'</b>'+bar(o.status)+'<p style="margin-top:8px"><b>'+STL[o.status]+'</b></p>'+(live?'<p class="gold">'+etaTxt(o,ol)+'</p>':'')
 +(o.status==='started'&&o.time_based?'<p class="gold">مضى '+f(Math.floor((Date.now()-new Date(o.started_at))/60000))+' دقيقة</p>':'')
 +'<div class="row"><span class="mut">'+PM[o.pay_method]+'</span><span class="gold">'+f(o.fixed_amount)+' ج'+(o.time_based?' + المحلول':'')+'</span></div>');
+if(n)h+=card(nurseCard(n));
+if(live&&ol){S.mp={a:{lat:+ol.lat,lng:+ol.lng},b:o.nurse_lat!=null?{lat:+o.nurse_lat,lng:+o.nurse_lng}:null};h+='<div id="mph"></div>'}
 h+=(o.status==='new'||o.status==='accepted'?B('cancel:'+o.id,'إلغاء الطلب','btn o'):'');
 h+=(o.status!=='new'?B('sos:'+o.id,'🚨 طوارئ','btn o').replace('class="btn o"','class="btn o" style="color:var(--bad)"'):'');
 return h}
@@ -137,7 +164,9 @@ return h}
 
 /* ---------- الممرض ---------- */
 function nurseV(){
-var p=S.p,n=nrs(p),d=S.d,h=hero(esc(p.name||'ممرض'),'سَنَد للممرضين')+B('out','خروج','sw');
+var p=S.p,n=nrs(p),d=S.d;
+if(S.pv||!p.name||!p.phone)return profV();
+var h=hero(esc(p.name||'ممرض'),'سَنَد للممرضين')+B('prof','بياناتي','sw')+B('out','خروج','sw');
 if(p.status!=='active')return h+card('<b class="bad">حسابك موقوف. تواصل مع الشركة.</b>');
 if(n.reg_status==='pending')return h+card('<b>طلبك قيد المراجعة</b><p class="mut">هتوصلك الموافقة من الشركة بعد مراجعة المستندات.</p>');
 if(n.reg_status==='new'){
@@ -153,14 +182,14 @@ if(ac){
  +'<p class="mut">العميل: '+esc(ac.client?ac.client.name:'')+(ac.client&&ac.client.phone?' · <a href="tel:'+esc(ac.client.phone)+'">'+esc(ac.client.phone)+'</a>':'')+'</p>'
  +'<p class="mut">'+(ac.pay_method==='cash'?'حصّل كاش':'مدفوع أونلاين ('+PM[ac.pay_method]+')')+': '+f(ac.fixed_amount)+' ج'+(ac.time_based?' + المحلول بالوقت':'')+'</p>'
  +(ac.status==='started'&&ac.time_based?'<p class="gold">مضى '+f(Math.floor((Date.now()-new Date(ac.started_at))/60000))+' دقيقة</p>':''));
- h+=B('adv:'+ac.id,nx,'btn g')+B('sos:'+ac.id,'🚨 طوارئ','btn o').replace('class="btn o"','class="btn o" style="color:var(--bad)"');
+ h+=navBlock(ac)+B('adv:'+ac.id,nx,'btn g')+B('sos:'+ac.id,'🚨 طوارئ','btn o').replace('class="btn o"','class="btn o" style="color:var(--bad)"');
 }else{
  if(ld&&ld.status==='done'&&!d.rp[ld.id])h+='<h2>تقرير الزيارة</h2>'+card('<input id="rb" placeholder="الضغط (مثال ١٢٠/٨٠)"><input id="rs" placeholder="السكر (مثال ١١٠)"><input id="rn" placeholder="ملاحظات"><input id="cmn" placeholder="شكوى ضد العميل (اختياري)">'+B('rep:'+ld.id,'احفظ وأرسل','btn g'));
  var nw=d.nw||[];
  h+='<h2>طلبات قريبة ('+f(nw.length)+')</h2>';
  if(!nw.length)h+=card('<span class="mut">مستني طلبات جديدة…</span>');
  var fee=Number(d.cf.visit_fee),cm=Number(d.cf.commission);
- nw.forEach(function(x){h+=card('<b>'+svn(x)+'</b>'+(x.for_whom!=='self'&&x.for_whom!=='لنفسي'?'<span class="gold"> · لـ'+esc(x.for_whom)+'</span>':'')+'<div class="row mut"><span>'+PM[x.pay_method]+'</span><span>دخلك: <span class="ok">'+f(x.fixed_amount-Math.round((x.fixed_amount-fee)*cm))+' ج</span>'+(x.time_based?' + المحلول':'')+'</span></div>'+B('acc:'+x.id,'اقبل','btn g'))});
+ nw.forEach(function(x){h+=card('<b>'+svn(x)+'</b>'+(x.for_whom!=='self'&&x.for_whom!=='لنفسي'?'<span class="gold"> · لـ'+esc(x.for_whom)+'</span>':'')+'<div class="row mut"><span>'+PM[x.pay_method]+(S.np&&x.area_lat!=null?' · '+f(Math.round(dist(S.np,{lat:+x.area_lat,lng:+x.area_lng})*10)/10)+' كم':'')+'</span><span>دخلك: <span class="ok">'+f(x.fixed_amount-Math.round((x.fixed_amount-fee)*cm))+' ج</span>'+(x.time_based?' + المحلول':'')+'</span></div>'+B('acc:'+x.id,'اقبل','btn g'))});
 }
 return h}
 
@@ -204,8 +233,9 @@ return h}
 
 /* ---------- الرسم ---------- */
 function render(){
-var h=!S.u?authV():!S.p?card('<span class="mut">جاري التحميل…</span>'):S.p.role==='admin'?admin():S.p.role==='nurse'?nurseV():clientV();
-document.getElementById('v').innerHTML=h+(S.toast?'<div class="toast" role="status">'+esc(S.toast)+'</div>':'')}
+S.mp=null;var h=!S.u?authV():!S.p?card('<span class="mut">جاري التحميل…</span>'):S.p.role==='admin'?admin():S.p.role==='nurse'?nurseV():clientV();
+document.getElementById('v').innerHTML=h+(S.toast?'<div class="toast" role="status">'+esc(S.toast)+'</div>':'');
+if(S.mp)mapFor(S.mp.a,S.mp.b)}
 
 /* ---------- الأحداث ---------- */
 document.addEventListener('click',function(e){
@@ -222,6 +252,9 @@ if(c==='pm'){S.pm=x;return render()}
 if(c==='abr'){S.abr=!S.abr;return render()}
 if(c==='sign'){S.sign=!S.sign;return render()}
 if(c==='dis'){localStorage.setItem('sd'+x,'1');return render()}
+if(c==='prof'){S.pv=!S.pv;return render()}
+if(c==='loc')return run(async function(){S.loc=await getPos()});
+if(c==='savep')return run(async function(){var nm=val('pn'),ph=val('pp');if(!nm||!ph)throw new Error('اكتب الاسم والموبايل');q(await SB.from('profiles').update({name:nm,phone:ph}).eq('id',S.u.id));S.pv=false});
 if(c==='si')return run(async function(){var r=q(await SB.auth.signInWithPassword({email:val('em'),password:val('pw')}));S.u=r.user});
 if(c==='su')return run(async function(){
  var r=await SB.auth.signUp({email:val('em'),password:val('pw'),options:{data:{role:S.role,name:val('nm'),phone:val('ph')}}});if(r.error)throw r.error;
@@ -229,7 +262,7 @@ if(c==='su')return run(async function(){
 if(c==='out'){SB.auth.signOut();S.u=null;S.p=null;S.d={};S.j='';S.view=null;return render()}
 run(async function(){
  var R=async function(n,p){q(await SB.rpc(n,p))};
- if(c==='req'){var ids=Object.keys(S.sel).filter(function(k){return S.sel[k]}).map(Number);await R('create_order',{p_services:ids,p_pay:S.pm,p_for:S.fam,p_abroad:S.abr});S.sel={}}
+ if(c==='req'){var ids=Object.keys(S.sel).filter(function(k){return S.sel[k]}).map(Number);if(!S.loc)throw new Error('حدّد موقعك الأول');await R('create_order',{p_services:ids,p_pay:S.pm,p_for:S.fam,p_abroad:S.abr,p_lat:S.loc.lat,p_lng:S.loc.lng,p_addr:val('ad')});S.sel={}}
  else if(c==='cancel')await R('cancel_order',{p_id:+x})
  else if(c==='sos'){await R('raise_incident',{p_order:+x});say('تم إبلاغ الشركة ✓. لو الحياة في خطر اتصل ١٢٣')}
  else if(c==='rate')await R('rate_order',{p_id:+x,p_stars:+y})
@@ -249,7 +282,7 @@ run(async function(){
 })});
 document.addEventListener('change',function(e){var k=e.target.dataset&&e.target.dataset.doc,fl=e.target.files&&e.target.files[0];if(!k||!fl)return;
  run(async function(){var ext=(fl.name.split('.').pop()||'jpg').toLowerCase();q(await SB.storage.from('nurse-docs').upload(S.u.id+'/'+k+'.'+ext,fl,{upsert:true}))})});
-setInterval(function(){var a=document.activeElement;if(S.u&&!(a&&/INPUT|TEXTAREA/.test(a.tagName)))load().catch(function(){})},4000);
+setInterval(function(){var a=document.activeElement;if(S.u&&!(a&&/INPUT|TEXTAREA/.test(a.tagName)))load().catch(function(){});sendLoc()},4000);
 (async function(){try{var r=await SB.auth.getSession();S.u=r.data.session?r.data.session.user:null;if(S.u)await load(true);else render()}catch(e){render();say('مشكلة في الاتصال')}})();
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js')}catch(e){}
 </script>
