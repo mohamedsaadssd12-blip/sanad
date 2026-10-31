@@ -46,8 +46,9 @@ a{color:var(--gold)}
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
+var RECOV=location.hash.indexOf('type=recovery')>-1,PHONE_AUTH=false;
 var SB=supabase.createClient('https://tsxvmmzhqrpwostxlgce.supabase.co','sb_publishable_lH02LIooEUgGRjnlNlPduw_vjt3lSbj');
-var S={u:null,p:null,d:{},mode:'in',role:'client',sel:{},fam:'لنفسي',pm:'cash',abr:false,sign:false,tab:'o',view:null,toast:'',j:'',urls:{},np:null,loc:null,pv:false,nt:'h',wm:'insta',rep:'d',rv:false};
+var S={u:null,p:null,d:{},mode:'in',role:'client',sel:{},fam:'لنفسي',pm:'cash',abr:false,sign:false,tab:'o',view:null,toast:'',j:'',urls:{},rec:RECOV,ct:'h',np:null,loc:null,pv:false,nt:'h',wm:'insta',rep:'d',rv:false};
 var PM={cash:'كاش',insta:'إنستاباي',wal:'محفظة',card:'حساب بنكي'};
 var STL={new:'بندوّر على ممرض…',accepted:'الممرض في الطريق',arrived:'الممرض وصل',started:'الخدمة جارية',done:'تمت الخدمة',cancelled:'اتلغى'};
 var SI=['accepted','arrived','started','done'];
@@ -85,7 +86,7 @@ async function load(force){
       d.up={};var fl=q(await SB.storage.from('nurse-docs').list(S.u.id));(fl||[]).forEach(function(x){d.up[x.name.split('.')[0]]=S.u.id+'/'+x.name});
     }
   }else{
-    d.pr=q(await SB.from('profiles').select('*,nurses(*)').order('created_at',{ascending:false}));
+    d.pr=q(await SB.from('profiles').select('*,nurses(*)').order('created_at',{ascending:false}));d.sv=q(await SB.from('services').select('*').order('id'));
     d.o=q(await SB.from('orders').select(oj).order('id',{ascending:false}).limit(1000));d.wr=q(await SB.from('wallet_requests').select('*').order('id',{ascending:false}).limit(200));
     d.cm=q(await SB.from('complaints').select('*').order('id',{ascending:false}));
     d.in=q(await SB.from('incidents').select('*').order('id',{ascending:false}));
@@ -95,7 +96,7 @@ async function load(force){
   var j=JSON.stringify([p,d,Math.floor(Date.now()/60000),S.np?S.np.lat.toFixed(4)+S.np.lng.toFixed(4):'']);
   if(force||j!==S.j){S.j=j;S.p=p;S.d=d;render()}
 }
-async function run(fn){try{await fn();await load(true)}catch(e){say(e.message||'حصل خطأ')}}
+async function run(fn){try{await fn();await load(true);if(!S.u||S.rec)render()}catch(e){say(e.message||'حصل خطأ')}}
 
 function na(x){var n=x&&x.nurses;return Array.isArray(n)?n[0]||{}:n||{}}
 function tier(v){return v>=30?'🥇 ذهبي':v>=10?'🥈 فضي':'🥉 برونزي'}
@@ -131,35 +132,45 @@ function nurseCard(n){var x=na(n),v=x.visits||0;return '<div class="row" style="
 function navBlock(o){var ol=S.d.ol&&S.d.ol[o.id];if(!ol)return '';S.mp=[{k:'c',lat:+ol.lat,lng:+ol.lng,em:'🏠'}].concat(S.np?[{k:'n',lat:S.np.lat,lng:S.np.lng,em:'🩺'}]:[]);return card('<b>📍 العنوان</b><p>'+esc(ol.addr||'—')+'</p><a class="sw" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+ol.lat+','+ol.lng+'">🧭 افتح الاتجاهات</a><div id="mph"></div>')}
 function profV(){var p=S.p,fo=!p.name||!p.phone;return hero(fo?'كمّل بياناتك':'بياناتي','الاسم والموبايل بيظهروا للطرف التاني في الزيارة')+card('<label class="mut">الاسم</label><input id="pn" value="'+esc(p.name)+'" placeholder="الاسم"><label class="mut">الموبايل</label><input id="pp" value="'+esc(p.phone)+'" inputmode="tel" placeholder="01xxxxxxxxx"><p class="mut">الإيميل: '+esc(S.u.email)+'</p>'+B('savep','حفظ','btn g')+(fo?'':B('prof','رجوع','btn o')))}
 /* ---------- الدخول ---------- */
-function authV(){var up=S.mode==='up';
-return hero('سَنَد','تمريض منزلي بمستوى فندقي')+card('<div class="tabs" style="margin-top:0">'+B('m:in','دخول',up?'':'on')+B('m:up','حساب جديد',up?'on':'')+'</div>'
-+(up?'<input id="nm" placeholder="الاسم"><input id="ph" placeholder="رقم الموبايل" inputmode="tel"><div class="grid">'+B('r:client','عميل','svc'+(S.role==='client'?' on':''))+B('r:nurse','ممرض','svc'+(S.role==='nurse'?' on':''))+'</div>':'')
-+'<input id="em" type="email" placeholder="الإيميل" autocomplete="email"><input id="pw" type="password" placeholder="الباسوورد (٦ حروف على الأقل)" autocomplete="current-password">'+B(up?'su':'si',up?'إنشاء الحساب':'دخول','btn g'))}
+function e164(p){var d=String(p).replace(/\D/g,'');if(d.indexOf('00')===0)d=d.slice(2);if(d.charAt(0)==='0')d='2'+d;return '+'+d}
+function authV(){
+if(S.rec)return hero('كلمة مرور جديدة','اكتب كلمة المرور الجديدة')+card('<input id="np1" type="password" placeholder="كلمة المرور الجديدة (٦ حروف على الأقل)" autocomplete="new-password"><input id="np2" type="password" placeholder="أعد كتابتها" autocomplete="new-password">'+B('setpw','حفظ','btn g'));
+var m=S.mode,up=m==='up',tb='<div class="tabs" style="margin-top:0">'+B('m:in','دخول',m==='in'?'on':'')+B('m:up','حساب جديد',up?'on':'')+(PHONE_AUTH?B('m:ph','كود SMS',m==='ph'?'on':''):'')+'</div>',body;
+var roles='<div class="grid">'+B('r:client','عميل','svc'+(S.role==='client'?' on':''))+B('r:nurse','ممرض','svc'+(S.role==='nurse'?' on':''))+'</div>';
+if(m==='fg')body='<p class="mut">اكتب إيميلك وهنبعتلك لينك لتغيير كلمة المرور.</p><input id="em" type="email" placeholder="الإيميل" autocomplete="email">'+B('fg','ابعت اللينك','btn g')+B('m:in','رجوع','btn o');
+else if(m==='ph')body=S.otp?'<p class="mut">اتبعتلك كود على '+esc(S.otp)+'</p><input id="cd" inputmode="numeric" placeholder="الكود">'+B('vfy','تأكيد','btn g')+B('otpx','رجوع','btn o'):'<input id="nm" placeholder="الاسم (لو حساب جديد)">'+roles+'<input id="phn" inputmode="tel" placeholder="رقم الموبايل 01xxxxxxxxx">'+B('otp','ابعت الكود','btn g');
+else body=(up?'<input id="nm" placeholder="الاسم"><input id="ph" placeholder="رقم الموبايل" inputmode="tel">'+roles:'')+'<input id="em" type="email" placeholder="الإيميل" autocomplete="email"><input id="pw" type="password" placeholder="الباسوورد (٦ حروف على الأقل)" autocomplete="current-password">'+B(up?'su':'si',up?'إنشاء الحساب':'دخول','btn g')+(up?'':B('m:fg','نسيت كلمة المرور؟','sw'));
+return hero('سَنَد','تمريض منزلي بمستوى فندقي')+card(tb+body)}
 
 /* ---------- العميل ---------- */
+function banner(o,a){return '<div class="card" style="border:2px solid var(--gold)"><div class="row"><b>📌 '+(S.p.role==='nurse'?'زيارة جارية':'طلبك شغال')+'</b><span class="gold">'+STL[o.status]+'</span></div><p class="mut">'+svn(o)+' · '+oc(o)+'</p>'+B(a,'العودة للطلب','btn g')+'</div>'}
 function clientV(){
-var p=S.p,d=S.d,o=d.o||[],ac=o.filter(function(x){return ['new','accepted','arrived','started'].indexOf(x.status)>-1})[0];
+var p=S.p,d=S.d,o=d.o||[];
 if(S.pv||!p.name||!p.phone)return profV();
-if(S.rv)return hero('القواعد والطوارئ','للسلامة')+B('rv','‹ رجوع','sw')+rulesC();
-var h=hero('أهلاً '+esc(p.name||''),'كود العميل: '+esc(p.code||'—'))+B('prof','بياناتي','sw')+B('rv','القواعد','sw')+B('out','خروج','sw');
-if(p.status!=='active')return h+card('<b class="bad">حسابك موقوف. تواصل مع الشركة.</b>');
-if(ac)h+=activeC(ac);
-else{
- var ld=o[0];
- if(ld&&ld.status==='done'&&!localStorage.getItem('sd'+ld.id))h+=doneC(ld);
- h+='<h2>اختار الخدمة</h2>';
- var t=0,fee=d.cf.visit_fee;
- (d.sv||[]).forEach(function(s){var on=S.sel[s.id];if(on)t+=Number(s.price);h+='<button class="svc'+(on?' on':'')+'" data-a="sel:'+s.id+'"><span class="t">'+esc(s.name)+'</span><b>'+(s.time_based?'بالوقت':f(s.price)+' ج')+'</b></button>'});
- var any=Object.keys(S.sel).some(function(k){return S.sel[k]});
- h+='<h2>الزيارة لمين؟</h2><div class="grid">'+['لنفسي','ماما','بابا'].map(function(w){return B('fam:'+w,w,'svc'+(S.fam===w?' on':''))}).join('')+'</div>';
- if(S.fam!=='لنفسي')h+=B('abr','✈️ أنا خارج مصر، ابعتلي التقرير','svc'+(S.abr?' on':''));
- h+='<h2>طريقة الدفع</h2><div class="grid">'+Object.keys(PM).map(function(k){return B('pm:'+k,PM[k],'svc'+(S.pm===k?' on':''))}).join('')+'</div>';
- h+=card('<div class="row"><span class="mut">رسوم الزيارة</span><span>'+f(fee)+' ج</span></div><div class="row"><b>الإجمالي</b><span class="gold">'+(any?f(t+Number(fee)):'—')+' ج</span></div>'+(S.sel[6]?'<p class="mut">المحلول: '+f(d.cf.iv_rate15)+' ج كل ربع ساعة، بيتحسب بالوقت الفعلي.</p>':''));
- h+=card('<b>📍 موقعك</b><p class="mut">'+(S.loc?'تم تحديد موقعك ✓':'لازم نحدد موقعك عشان الممرض يوصلك')+'</p>'+B('loc',S.loc?'تحديث الموقع':'حدّد موقعي','sw'+(S.loc?' on':''))+'<input id="ad" placeholder="العنوان بالتفصيل (عمارة، دور، شقة)">');
- h+='<button class="btn g" data-a="req"'+(any&&S.loc?'':' disabled')+'>اطلب ممرض الآن</button>';
- var hs=o.filter(function(x){return x.status==='done'||x.status==='cancelled'});
- if(hs.length)h+='<h2>طلباتي السابقة</h2>'+card(hs.map(function(x){return '<div class="row" style="padding:5px 0"><span>'+svn(x)+'<br><small class="mut">'+new Date(x.created_at).toLocaleDateString('ar-EG')+' · '+STL[x.status]+'</small></span><b>'+(x.total?f(x.total)+' ج':'—')+'</b></div>'}).join(''));
-}
+var ac=o.filter(function(x){return ['new','accepted','arrived','started'].indexOf(x.status)>-1})[0];
+var h=hero('أهلاً '+esc(p.name),'كود العميل: '+esc(p.code||'—'));
+if(p.status!=='active')return h+B('out','خروج','sw')+card('<b class="bad">حسابك موقوف. تواصل مع الشركة.</b>');
+h+='<div class="tabs">'+[['h','الطلب'],['v','طلباتي'],['a','حسابي']].map(function(x){return B('ct:'+x[0],x[1]+(x[0]==='h'&&ac?' 🔴':''),S.ct===x[0]?'on':'')}).join('')+'</div>';
+if(S.ct!=='h'&&ac)h+=banner(ac,'ct:h');
+if(S.ct==='a')return h+accC(p);
+if(S.ct==='v')return h+histC(o);
+return h+homeC(ac,o)}
+function accC(p){return card('<b>'+esc(p.name)+'</b> <span class="mut">'+esc(p.code||'')+'</span><p class="mut">'+esc(p.phone)+' · '+esc(S.u.email||S.u.phone||'')+'</p>'+B('prof','تعديل بياناتي','btn o')+B('out','تسجيل خروج','btn o'))+rulesC()}
+function histC(o){var hs=o.filter(function(x){return x.status==='done'||x.status==='cancelled'});
+return '<h2>طلباتي ('+f(hs.length)+')</h2>'+(hs.length?hs.map(function(x){var n=x.nurse||{};return card('<div class="row"><b>'+svn(x)+'</b><span class="mut">'+oc(x)+'</span></div><p class="mut">'+new Date(x.created_at).toLocaleString('ar-EG',{dateStyle:'short',timeStyle:'short'})+' · '+STL[x.status]+'</p>'+(x.status==='done'?'<div class="row"><span>'+(n.name?esc(n.name)+' <small class="mut">'+esc(n.code||'')+'</small>':'')+'</span><b class="gold">'+f(x.total)+' ج</b></div><p class="mut">'+PM[x.pay_method]+(x.rating?' · '+'★'.repeat(x.rating):'')+'</p>':''))}).join(''):card('<span class="mut">لسه مفيش طلبات</span>'))}
+function homeC(ac,o){var d=S.d,h='';
+if(ac)return activeC(ac);
+var ld=o[0];if(ld&&ld.status==='done'&&!localStorage.getItem('sd'+ld.id))h+=doneC(ld);
+h+='<h2>اختار الخدمة</h2>';
+var t=0,fee=Number(d.cf.visit_fee),af=false;
+(d.sv||[]).forEach(function(s){var on=S.sel[s.id];if(on){t+=Number(s.price);if(s.applies_fee)af=true}h+='<button class="svc'+(on?' on':'')+'" data-a="sel:'+s.id+'"><span class="t">'+esc(s.name)+'</span><b>'+f(s.price)+' ج</b></button>'});
+var any=Object.keys(S.sel).some(function(k){return S.sel[k]});
+h+='<h2>الزيارة لمين؟</h2><div class="grid">'+['لنفسي','ماما','بابا'].map(function(w){return B('fam:'+w,w,'svc'+(S.fam===w?' on':''))}).join('')+'</div>';
+if(S.fam!=='لنفسي')h+=B('abr','✈️ أنا خارج مصر، ابعتلي التقرير','svc'+(S.abr?' on':''));
+h+='<h2>طريقة الدفع</h2><div class="grid">'+Object.keys(PM).map(function(k){return B('pm:'+k,PM[k],'svc'+(S.pm===k?' on':''))}).join('')+'</div>';
+h+=card('<div class="row"><span class="mut">رسوم الزيارة</span><span>'+(any&&af?f(fee)+' ج':'—')+'</span></div><div class="row"><b>الإجمالي</b><span class="gold">'+(any?f(t+(af?fee:0))+' ج':'—')+'</span></div>');
+h+=card('<b>📍 موقعك</b><p class="mut">'+(S.loc?'تم تحديد موقعك ✓':'لازم نحدد موقعك عشان الممرض يوصلك')+'</p>'+B('loc',S.loc?'تحديث الموقع':'حدّد موقعي','sw'+(S.loc?' on':''))+'<input id="ad" placeholder="العنوان بالتفصيل (عمارة، دور، شقة)">');
+h+='<button class="btn g" data-a="req"'+(any&&S.loc?'':' disabled')+'>اطلب ممرض الآن</button>';
 return h}
 function activeC(o){
 var ol=S.d.ol&&S.d.ol[o.id],n=o.nurse,live=o.status==='accepted'||o.status==='arrived';
@@ -194,7 +205,8 @@ if(n.reg_status==='new'){
 var tb=[['h','الرئيسية'],['v','زياراتي'],['w','المحفظة'],['a','حسابي']];
 h+='<div class="tabs">'+tb.map(function(x){return B('nt:'+x[0],x[1],S.nt===x[0]?'on':'')}).join('')+'</div>';
 var o=d.o||[],done=o.filter(function(x){return x.status==='done'});
-return h+(S.nt==='v'?visitsV(o):S.nt==='w'?walletV(n,done):S.nt==='a'?accV(p,n):homeV(n,o,done))}
+var act=o.filter(function(x){return ['accepted','arrived','started'].indexOf(x.status)>-1})[0];
+return h+(act&&S.nt!=='h'?banner(act,'nt:h'):'')+(S.nt==='v'?visitsV(o):S.nt==='w'?walletV(n,done):S.nt==='a'?accV(p,n):homeV(n,o,done))}
 function homeV(n,o,done){var d=S.d,cf=d.cf,debt=Number(n.debt||0),lim=Number(cf.debt_limit),td=sod(Date.now());
 var h=B('onl',n.online?'🟢 متاح لاستقبال الطلبات (اضغط للإيقاف)':'⚪ غير متاح (اضغط للتفعيل)',n.online?'btn g':'btn o');
 h+='<div class="grid">'+K('دخل اليوم',f(sumS(done,td,'nurse_share'))+' ج')+K('زيارات اليوم',f(done.filter(function(x){return new Date(x.finished_at)>=td}).length))+K('رصيد قابل للسحب',f(n.balance)+' ج')+K('مستحق للشركة',f(debt)+' ج')+'</div>';
@@ -213,7 +225,7 @@ if(ac){
  if(!n.online)h+=card('<span class="mut">فعّل «متاح» عشان تستقبل طلبات.</span>');
  else if(!nw.length)h+=card('<span class="mut">مستني طلبات جديدة…</span>');
  var fee=Number(cf.visit_fee),cm=Number(cf.commission);
- if(n.online)nw.forEach(function(x){h+=card('<b>'+svn(x)+'</b> <span class="mut">'+oc(x)+'</span>'+(x.for_whom!=='self'&&x.for_whom!=='لنفسي'?'<span class="gold"> · لـ'+esc(x.for_whom)+'</span>':'')+'<div class="row mut"><span>'+PM[x.pay_method]+(S.np&&x.area_lat!=null?' · '+f(Math.round(dist(S.np,{lat:+x.area_lat,lng:+x.area_lng})*10)/10)+' كم':'')+'</span><span>دخلك: <span class="ok">'+f(x.fixed_amount-Math.round((x.fixed_amount-fee)*cm))+' ج</span>'+(x.time_based?' + المحلول':'')+'</span></div>'+B('acc:'+x.id,'اقبل','btn g'))});
+ if(n.online)nw.forEach(function(x){h+=card('<b>'+svn(x)+'</b> <span class="mut">'+oc(x)+'</span>'+(x.for_whom!=='self'&&x.for_whom!=='لنفسي'?'<span class="gold"> · لـ'+esc(x.for_whom)+'</span>':'')+'<div class="row mut"><span>'+PM[x.pay_method]+(S.np&&x.area_lat!=null?' · '+f(Math.round(dist(S.np,{lat:+x.area_lat,lng:+x.area_lng})*10)/10)+' كم':'')+'</span><span>دخلك: <span class="ok">'+f(x.fixed_amount-Math.round((x.fixed_amount-Number(x.fee_amount||0))*cm))+' ج</span>'+(x.time_based?' + المحلول':'')+'</span></div>'+B('acc:'+x.id,'اقبل','btn g'))});
 }
 return h}
 function visitsV(o){var h='<h2>زياراتي ('+f(o.length)+')</h2>';if(!o.length)return h+card('<span class="mut">لسه مفيش زيارات</span>');
@@ -261,6 +273,7 @@ return h}
 function payV(){var wr=S.d.wr||[],pe=wr.filter(function(x){return x.status==='pending'});
 return '<h2>طلبات معلقة ('+f(pe.length)+')</h2>'+(pe.length?pe.map(function(w){return card('<div class="row"><b>'+(w.kind==='debt'?'سداد مديونية':'سحب أرباح')+'</b><span class="gold">'+f(w.amount)+' ج</span></div><p>'+pn(w.nurse_id)+' <small class="mut">'+pc(w.nurse_id)+'</small></p><p class="mut">'+(PM[w.method]||esc(w.method))+' · '+esc(w.ref)+'</p>'+B('wr:'+w.id+':1','اعتماد ✓','btn g')+B('wr:'+w.id+':0','رفض','btn o'))}).join(''):card('<span class="mut">مفيش</span>'))
 +'<h2>السجل</h2>'+card(wr.filter(function(x){return x.status!=='pending'}).slice(0,25).map(function(w){return '<div class="row" style="padding:4px 0"><span>'+pn(w.nurse_id)+' · '+(w.kind==='debt'?'سداد':'سحب')+'</span><span>'+f(w.amount)+' ج <b class="'+(w.status==='approved'?'ok':'bad')+'">'+(w.status==='approved'?'تم':'مرفوض')+'</b></span></div>'}).join('')||'<span class="mut">فاضي</span>')}
+function svcAdm(){var sv=S.d.sv||[];return '<h2>الخدمات والأسعار</h2>'+card(sv.map(function(s){return '<div class="row" style="padding:5px 0;flex-wrap:wrap"><span>'+esc(s.name)+(s.applies_fee?'':' <small class="mut">(بدون رسوم زيارة)</small>')+(s.active?'':' <small class="bad">موقوفة</small>')+'</span><span class="row" style="flex:none;gap:6px"><input id="sp'+s.id+'" type="number" value="'+s.price+'" style="width:90px;margin:0">'+B('sp:'+s.id,'حفظ','sw')+B('sa:'+s.id,s.active?'إيقاف':'تفعيل','sw')+'</span></div>'}).join('')+'<input id="nsn" placeholder="اسم خدمة جديدة"><input id="nsp" type="number" placeholder="السعر">'+B('nf',S.nfee?'بدون رسوم زيارة ✓':'بدون رسوم زيارة','sw'+(S.nfee?' on':''))+B('ns','إضافة الخدمة','btn g'))}
 function admin(){
 var d=S.d,t=S.tab,pr=d.pr||[],od=d.o||[],pend=(d.wr||[]).filter(function(x){return x.status==='pending'}).length;
 var tabs=[['o','نظرة'],['l','مباشر'],['n','ممرضين'],['c','عملاء'],['p','مدفوعات'+(pend?' 🔴'+pend:'')],['k','شكاوى'],['i','طوارئ'],['r','تقارير'],['q','طلبات']];
@@ -272,7 +285,8 @@ if(t==='o'){
  var pn2=pr.filter(function(p){return p.role==='nurse'&&nrs(p).reg_status==='pending'}),cf=d.cf;
  h+='<div class="grid">'+K('إجمالي الحجوزات',f(sum(done,'total'))+' ج')+K('عمولة الشركة',f(sum(done,'commission'))+' ج')+K('مستحق عند الممرضين',f(debt)+' ج')+K('طلبات مكتملة',f(done.length))+K('طوارئ مفتوحة',f((d.in||[]).filter(function(x){return x.status==='open'}).length))+K('شكاوى مفتوحة',f((d.cm||[]).filter(function(x){return x.status==='open'}).length))+'</div>';
  h+='<h2>طلبات انضمام ('+f(pn2.length)+')</h2>'+card(pn2.length?pn2.map(function(p){return '<div class="row" style="padding:5px 0"><span>'+esc(p.name)+' <small class="mut">'+esc(p.code||'')+'</small></span>'+B('v:n:'+p.id,'مراجعة','sw')+'</div>'}).join(''):'<span class="mut">مفيش</span>');
- h+='<h2>الإعدادات</h2>'+card('<label class="mut">العمولة ٪</label><input id="s1" type="number" value="'+Math.round(cf.commission*100)+'"><label class="mut">رسوم الزيارة (للممرض)</label><input id="s2" type="number" value="'+cf.visit_fee+'"><label class="mut">المحلول لكل ربع ساعة</label><input id="s3" type="number" value="'+cf.iv_rate15+'"><label class="mut">حد المديونية</label><input id="s4" type="number" value="'+cf.debt_limit+'"><label class="mut">إنستاباي الشركة (لسداد الممرضين)</label><input id="s5" value="'+esc(cf.pay_instapay||'')+'"><label class="mut">محفظة الشركة</label><input id="s6" value="'+esc(cf.pay_wallet||'')+'"><label class="mut">رقم عمليات الشركة (طوارئ)</label><input id="s7" value="'+esc(cf.ops_phone||'')+'">'+B('set','حفظ الإعدادات','btn g'));
+ h+='<h2>الإعدادات</h2>'+card('<label class="mut">العمولة ٪</label><input id="s1" type="number" value="'+Math.round(cf.commission*100)+'"><label class="mut">رسوم الزيارة (للممرض)</label><input id="s2" type="number" value="'+cf.visit_fee+'"><label class="mut">حد المديونية</label><input id="s4" type="number" value="'+cf.debt_limit+'"><label class="mut">إنستاباي الشركة (لسداد الممرضين)</label><input id="s5" value="'+esc(cf.pay_instapay||'')+'"><label class="mut">محفظة الشركة</label><input id="s6" value="'+esc(cf.pay_wallet||'')+'"><label class="mut">رقم عمليات الشركة (طوارئ)</label><input id="s7" value="'+esc(cf.ops_phone||'')+'">'+B('set','حفظ الإعدادات','btn g'));
+ h+=svcAdm();
 }else if(t==='l')h+=liveV();
 else if(t==='n'||t==='c'){
  var ls=pr.filter(function(p){return p.role===(t==='n'?'nurse':'client')});
@@ -298,7 +312,7 @@ return h}
 
 /* ---------- الرسم ---------- */
 function render(){
-S.mp=null;var h=!S.u?authV():!S.p?card('<span class="mut">جاري التحميل…</span>'):S.p.role==='admin'?admin():S.p.role==='nurse'?nurseV():clientV();
+S.mp=null;var h=S.rec||!S.u?authV():!S.p?card('<span class="mut">جاري التحميل…</span>'):S.p.role==='admin'?admin():S.p.role==='nurse'?nurseV():clientV();
 document.getElementById('v').innerHTML=h+(S.toast?'<div class="toast" role="status">'+esc(S.toast)+'</div>':'');
 if(S.mp)mapFor(S.mp)}
 
@@ -330,6 +344,13 @@ if(c==='si')return run(async function(){var r=q(await SB.auth.signInWithPassword
 if(c==='su')return run(async function(){
  var r=await SB.auth.signUp({email:val('em'),password:val('pw'),options:{data:{role:S.role,name:val('nm'),phone:val('ph')}}});if(r.error)throw r.error;
  if(!r.data.session){S.mode='in';throw new Error('اتبعتلك إيميل تأكيد. أكّده وارجع ادخل.')}S.u=r.data.session.user});
+if(c==='ct'){S.ct=x;return render()}
+if(c==='nf'){S.nfee=!S.nfee;return render()}
+if(c==='otpx'){S.otp=null;return render()}
+if(c==='fg')return run(async function(){q(await SB.auth.resetPasswordForEmail(val('em'),{redirectTo:location.origin+location.pathname}));S.mode='in';say('اتبعتلك لينك على الإيميل. افتحه وغيّر كلمة المرور.')});
+if(c==='setpw')return run(async function(){var a=val('np1');if(a.length<6||a!==val('np2'))throw new Error('الباسوورد لازم ٦ حروف على الأقل ويتطابق');q(await SB.auth.updateUser({password:a}));S.rec=false;try{history.replaceState(null,'',location.pathname)}catch(e){}say('اتغيّرت كلمة المرور ✓')});
+if(c==='otp')return run(async function(){var ph=e164(val('phn'));q(await SB.auth.signInWithOtp({phone:ph,options:{data:{role:S.role,name:val('nm'),phone:val('phn')}}}));S.otp=ph});
+if(c==='vfy')return run(async function(){var r=q(await SB.auth.verifyOtp({phone:S.otp,token:val('cd'),type:'sms'}));S.u=r.user;S.otp=null});
 if(c==='out'){SB.auth.signOut();S.u=null;S.p=null;S.d={};S.j='';S.view=null;return render()}
 run(async function(){
  var R=async function(n,p){q(await SB.rpc(n,p))};
@@ -339,6 +360,9 @@ run(async function(){
  else if(c==='rate')await R('rate_order',{p_id:+x,p_stars:+y})
  else if(c==='cmp'){var t=val('cmt');if(!t)return;var o=S.d.o.filter(function(z){return z.id==x})[0];q(await SB.from('complaints').insert({from_role:'client',client_id:uid,nurse_id:o.nurse_id,order_id:o.id,body:t}));say('اتبعتت شكواك للإدارة ✓')}
  else if(c==='acc')await R('accept_order',{p_id:+x})
+ else if(c==='sp')q(await SB.from('services').update({price:+val('sp'+x)}).eq('id',x))
+ else if(c==='sa'){var sv0=S.d.sv.filter(function(z){return z.id==x})[0];q(await SB.from('services').update({active:!sv0.active}).eq('id',x))}
+ else if(c==='ns'){var nn=val('nsn'),np=+val('nsp');if(!nn||!(np>=0))throw new Error('اكتب اسم وسعر');q(await SB.from('services').insert({name:nn,price:np,applies_fee:!S.nfee}));S.nfee=false}
  else if(c==='onl')await R('set_online',{p_on:!nrs(S.p).online})
  else if(c==='wd')await R('request_wallet',{p_kind:'debt',p_amount:+val('dpa'),p_method:S.wm,p_ref:val('dpr')})
  else if(c==='wo')await R('request_wallet',{p_kind:'withdraw',p_amount:+val('wda'),p_method:S.wm,p_ref:val('wdr')})
@@ -353,11 +377,12 @@ run(async function(){
  else if(c==='cr'){var cc=S.d.cm.filter(function(z){return z.id==x})[0];q(await SB.from('complaints').update({status:'closed',action:y}).eq('id',x));if(y==='إيقاف')q(await SB.from('profiles').update({status:'suspended'}).eq('id',cc.from_role==='client'?cc.nurse_id:cc.client_id))}
  else if(c==='is'){var inc=S.d.in.filter(function(z){return z.id==x})[0],st=inc.steps&&inc.steps.length?inc.steps.slice():[0,0,0,0];st[y]=st[y]?0:1;q(await SB.from('incidents').update({steps:st}).eq('id',x))}
  else if(c==='ir')q(await SB.from('incidents').update({status:'closed',resolved_at:new Date().toISOString()}).eq('id',x))
- else if(c==='set'){q(await SB.from('settings').update({commission:(+val('s1'))/100,visit_fee:+val('s2'),iv_rate15:+val('s3'),debt_limit:+val('s4'),pay_instapay:val('s5'),pay_wallet:val('s6'),ops_phone:val('s7')}).eq('id',1));say('اتحفظت ✓')}
+ else if(c==='set'){q(await SB.from('settings').update({commission:(+val('s1'))/100,visit_fee:+val('s2'),debt_limit:+val('s4'),pay_instapay:val('s5'),pay_wallet:val('s6'),ops_phone:val('s7')}).eq('id',1));say('اتحفظت ✓')}
 })});
 document.addEventListener('change',function(e){var k=e.target.dataset&&e.target.dataset.doc,fl=e.target.files&&e.target.files[0];if(!k||!fl)return;
  run(async function(){var ext=(fl.name.split('.').pop()||'jpg').toLowerCase();q(await SB.storage.from('nurse-docs').upload(S.u.id+'/'+k+'.'+ext,fl,{upsert:true}))})});
 setInterval(function(){var a=document.activeElement;if(S.u&&!(a&&/INPUT|TEXTAREA/.test(a.tagName)))load().catch(function(){});sendLoc()},4000);
+SB.auth.onAuthStateChange(function(ev,s){if(ev==='PASSWORD_RECOVERY'){S.rec=true;S.u=s&&s.user;render()}});
 (async function(){try{var r=await SB.auth.getSession();S.u=r.data.session?r.data.session.user:null;if(S.u)await load(true);else render()}catch(e){render();say('مشكلة في الاتصال')}})();
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js')}catch(e){}
 </script>
